@@ -5,11 +5,8 @@ package ru.kek.memehouse.models;
  * 06.10.17
  */
 public class Picture implements Attachment {
-	private String originalFileUrl;
-	private long originalFilesize;
+	private FileModel originalFile;
+	private FileModel thumbFile;
 	private String originalResolution;
-	private String thumbFileUrl;
-	private long thumbFilesize;
 	private String thumbResolution;
-	private String mimeType;
 }

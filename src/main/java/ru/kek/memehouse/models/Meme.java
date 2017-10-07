@@ -10,6 +10,8 @@ public class Meme {
 	private Attachment attachment;
 	private String description;
 	private String name;
-	private Set<String> tags;
+	private Set<Tag> tags;
+	private User loadedBy;
+	private boolean isDeleted;
 	// TODO: 06.10.17 добавить "родительские" и "дочерние" мемы
 }
