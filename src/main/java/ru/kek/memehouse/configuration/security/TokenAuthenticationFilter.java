@@ -1,5 +1,6 @@
 package ru.kek.memehouse.configuration.security;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,11 +19,9 @@ import java.io.IOException;
  */
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-	private AuthenticationManager authenticationManager;
-
 	TokenAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super(new AntPathRequestMatcher("/api/**"));
-		this.authenticationManager = authenticationManager;
+		super.setAuthenticationManager(authenticationManager);
 	}
 
 	@Override
@@ -40,8 +39,15 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
 		if (isNullOrEmpty(tokenValue)) {
 			throw new AuthException("Authentication token is not found");
 		} else {
-			return authenticationManager.authenticate(new AuthenticationToken(tokenValue));
+			return getAuthenticationManager().authenticate(new AuthenticationToken(tokenValue));
 		}
+	}
+
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+		response.setStatus(HttpStatus.FORBIDDEN.value());
+		response.addHeader("Content-Type", "application/json;charset=UTF-8");
+		response.getWriter().write("{message: \"" + failed.getMessage() + "\"}");
 	}
 
 	private static boolean isNullOrEmpty(String value) {

@@ -3,6 +3,7 @@ package ru.kek.memehouse.configuration.security;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.kek.memehouse.models.TokenModel;
 
 import java.util.Collection;
 
@@ -11,7 +12,7 @@ import java.util.Collection;
  * 06.10.17
  */
 public class AuthenticationToken implements Authentication {
-	private String token;
+	private TokenModel token;
 	private UserDetails userDetails;
 	private boolean isAuthenticated;
 
@@ -20,7 +21,7 @@ public class AuthenticationToken implements Authentication {
 	}
 
 	AuthenticationToken(String token) {
-		this.token = token;
+		this.token = new TokenModel(token);
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class AuthenticationToken implements Authentication {
 	}
 
 	@Override
-	public String getCredentials() {
+	public TokenModel getCredentials() {
 		return token;
 	}
 
