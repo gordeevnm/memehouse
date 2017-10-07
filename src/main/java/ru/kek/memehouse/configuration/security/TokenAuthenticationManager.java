@@ -24,7 +24,7 @@ public class TokenAuthenticationManager implements AuthenticationManager {
 		AuthenticationToken tokenAuthentication = (AuthenticationToken) authentication;
 		UserDetails userDetails;
 		try {
-			userDetails = userDetailsService.loadUserByUsername(tokenAuthentication.getCredentials());
+			userDetails = userDetailsService.loadUserByUsername(tokenAuthentication.getCredentials().toString());
 		} catch (UsernameNotFoundException e) {
 			throw new AuthException(e.getMessage());
 		}

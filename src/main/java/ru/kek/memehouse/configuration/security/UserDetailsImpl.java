@@ -11,26 +11,23 @@ import java.util.Collection;
  * 06.10.17
  */
 public class UserDetailsImpl extends User implements UserDetails {
-	private final User user;
-
 	UserDetailsImpl(User user) {
 		super(user);
-		this.user = user;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return user.authorities;
+		return this.authorities;
 	}
 
 	@Override
 	public String getPassword() {
-		return user.password;
+		return this.password;
 	}
 
 	@Override
 	public String getUsername() {
-		return user.username;
+		return this.username;
 	}
 
 	@Override

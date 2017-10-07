@@ -9,8 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.servlet.Filter;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 
 /**
  * gordeevnm@gmail.com
@@ -19,26 +18,15 @@ import javax.servlet.Filter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-	@Bean
-	public Filter tokenAuthenticationFilter() {
-		return new TokenAuthenticationFilter(authenticationManagerBean());
-	}
-
 	@Bean
 	@Override
-	public AuthenticationManager authenticationManagerBean() {
+	public AuthenticationManager authenticationManager() {
 		return new TokenAuthenticationManager(userDetailsService());
 	}
 
 	@Bean
 	@Override
 	protected UserDetailsService userDetailsService() {
-		return new UserDetailsServiceImpl();
-	}
-	@Bean
-	@Override
-	public UserDetailsService userDetailsServiceBean() {
 		return new UserDetailsServiceImpl();
 	}
 
@@ -50,12 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.addFilter(tokenAuthenticationFilter())
+				.addFilterBefore(new TokenAuthenticationFilter(authenticationManager()), AnonymousAuthenticationFilter.class)
 
 				.authorizeRequests()
 				.antMatchers("/api/auth/login").permitAll()
 				.antMatchers("/api/**").authenticated()
 				.anyRequest().permitAll()
-				.and().cors();
+				.and().cors()
+				.and().csrf().disable();
 	}
 }
