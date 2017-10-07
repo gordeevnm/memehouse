@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.kek.memehouse.configuration.security.exceptions.TokenAuthenticationHeaderNotFound;
 import ru.kek.memehouse.exceptions.BadRequestException;
+import ru.kek.memehouse.models.additional.JacksonDto;
 
 import javax.validation.ValidationException;
 
@@ -19,12 +20,20 @@ import javax.validation.ValidationException;
  */
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
+
+	private static final HttpHeaders headers;
+
+	static {
+		headers = new HttpHeaders();
+		headers.set("Content-Type", "application/json;charset=UTF-8");
+	}
+
 	@ExceptionHandler({AuthenticationException.class})
 	public ResponseEntity<Object> incorrectAuthData(Exception e, WebRequest request) {
 		return handleExceptionInternal(
 				e,
 				new ErrorDto(e.getMessage()),
-				createHttpHeaders(),
+				headers,
 				HttpStatus.FORBIDDEN,
 				request);
 	}
@@ -34,7 +43,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(
 				e,
 				new ErrorDto(e.getMessage()),
-				createHttpHeaders(),
+				headers,
 				HttpStatus.UNAUTHORIZED,
 				request);
 	}
@@ -44,7 +53,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(
 				e,
 				new ErrorDto(e.getMessage()),
-				createHttpHeaders(),
+				headers,
 				HttpStatus.BAD_REQUEST,
 				request);
 	}
@@ -55,17 +64,12 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(
 				e,
 				new ErrorDto(e.getMessage()),
-				createHttpHeaders(),
+				headers,
 				HttpStatus.INTERNAL_SERVER_ERROR,
 				request);
 	}
 
-	private static HttpHeaders createHttpHeaders() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Content-Type", "application/json;charset=UTF-8");
-		return headers;
-	}
-
+	@JacksonDto
 	private static class ErrorDto {
 		private String message;
 
