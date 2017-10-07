@@ -6,7 +6,7 @@ import java.util.Set;
  * gordeevnm@gmail.com
  * 06.10.17
  */
-public class Meme {
+public class Meme extends Model {
 	private Attachment attachment;
 	private String description;
 	private String name;
