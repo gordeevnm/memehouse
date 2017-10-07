@@ -5,6 +5,5 @@ package ru.kek.memehouse.models;
  * 06.10.17
  */
 public class Video implements Attachment {
-	private String videoUrl;
-	private String mimeType;
+	private String url;
 }
