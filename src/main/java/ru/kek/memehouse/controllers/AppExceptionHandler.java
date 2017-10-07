@@ -1,5 +1,6 @@
 package ru.kek.memehouse.controllers;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,9 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.kek.memehouse.configuration.security.exceptions.TokenAuthenticationHeaderNotFound;
 import ru.kek.memehouse.exceptions.BadRequestException;
-import ru.kek.memehouse.models.additional.JacksonDto;
 
 import javax.validation.ValidationException;
 
@@ -38,16 +37,6 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 				request);
 	}
 
-	@ExceptionHandler({TokenAuthenticationHeaderNotFound.class})
-	public ResponseEntity<Object> incorrectToken(Exception e, WebRequest request) {
-		return handleExceptionInternal(
-				e,
-				new ErrorDto(e.getMessage()),
-				headers,
-				HttpStatus.UNAUTHORIZED,
-				request);
-	}
-
 	@ExceptionHandler({BadRequestException.class, ValidationException.class})
 	public ResponseEntity<Object> badRequest(Exception e, WebRequest request) {
 		return handleExceptionInternal(
@@ -69,7 +58,10 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 				request);
 	}
 
-	@JacksonDto
+	@JsonAutoDetect(
+			fieldVisibility = JsonAutoDetect.Visibility.ANY,
+			getterVisibility = JsonAutoDetect.Visibility.NONE,
+			setterVisibility = JsonAutoDetect.Visibility.NONE)
 	private static class ErrorDto {
 		private String message;
 
