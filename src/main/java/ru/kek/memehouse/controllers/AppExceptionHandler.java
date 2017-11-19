@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import ru.kek.memehouse.exceptions.BadRequestException;
 
 import javax.validation.ValidationException;
+import java.sql.SQLException;
 
 /**
  * gordeevnm@gmail.com
@@ -47,7 +48,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 				request);
 	}
 
-	@ExceptionHandler(Exception.class)
+	@ExceptionHandler({Exception.class, SQLException.class})
 	public ResponseEntity<Object> defaultException(Exception e, WebRequest request) {
 		e.printStackTrace();
 		return handleExceptionInternal(
