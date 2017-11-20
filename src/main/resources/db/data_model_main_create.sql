@@ -1,5 +1,5 @@
 CREATE TABLE public.user (
-	id integer NOT NULL,
+	id SERIAL NOT NULL,
 	username varchar(255) NOT NULL,
 	password varchar(255) NOT NULL,
 	email varchar(255),
@@ -14,7 +14,7 @@ COMMENT ON COLUMN public.user.email
 	IS 'Привязка почты - не обязательное условие регистрации. Нужно будет, например, для выдачи прав модератора.';
 
 CREATE TABLE public.ban (
-	id integer NOT NULL,
+	id SERIAL NOT NULL,
 	user_id integer NOT NULL,
 	moderator_id integer NOT NULL,
 	start_time timestamp without time zone NOT NULL,
@@ -45,7 +45,7 @@ COMMENT ON TABLE public.role
 	IS 'Роли пользователя. Для выдачи прав на модерацию мемов/пользователей/тегов/...';
 
 CREATE TABLE public.file (
-	id integer NOT NULL,
+	id SERIAL NOT NULL,
 	uploaded_by integer NOT NULL,
 	path varchar(500) NOT NULL,
 	mime varchar(255) NOT NULL,
@@ -68,7 +68,7 @@ COMMENT ON COLUMN public.file.original_name
 	IS 'Оригинальное название файла.';
 
 CREATE TABLE public.meme (
-	id integer NOT NULL,
+	id SERIAL NOT NULL,
 	uploaded_by integer NOT NULL,
 	attachment_id integer NOT NULL,
 	description varchar(1000),
@@ -93,7 +93,7 @@ COMMENT ON COLUMN public.meme.lurkmore_link
 	IS 'Ссылка на лурк, если там есть статья о данном меме, будет помогать при поиске похожих мемов.';
 
 CREATE TABLE public.note (
-	id integer NOT NULL,
+	id SERIAL NOT NULL,
 	user_id integer NOT NULL,
 	meme_id bigint NOT NULL,
 	note varchar(500) NOT NULL,
@@ -110,7 +110,7 @@ COMMENT ON TABLE public.note
 	IS 'Заметки пользователя о мемах. Видны только пользователю. На основной поиск не влияет, будет отдельный поиск по заметкам и список мемов с заметками.';
 
 CREATE TABLE public.attachment (
-	id integer NOT NULL,
+	id SERIAL NOT NULL,
 	thumb_file_id integer,
 	original_file_id integer,
 	attachment_type varchar(100) NOT NULL,
@@ -146,7 +146,7 @@ COMMENT ON TABLE public.saved_meme
 	IS 'Пользователь может сохранить какой-то мем. Что-то вроде "избранного"';
 
 CREATE TABLE public.tag (
-	id integer NOT NULL,
+	id SERIAL NOT NULL,
 	tag varchar(100) NOT NULL,
 	PRIMARY KEY (id)
 );

@@ -229,7 +229,7 @@
 										"$ref": "AAAAAAFfqm9A37jN0EU="
 									},
 									"name": "id",
-									"type": "INTEGER",
+									"type": "SERIAL",
 									"primaryKey": true,
 									"foreignKey": false,
 									"nullable": false,
@@ -343,7 +343,7 @@
 										"$ref": "AAAAAAFfqm9c67ja+YQ="
 									},
 									"name": "id",
-									"type": "INTEGER",
+									"type": "SERIAL",
 									"primaryKey": true,
 									"foreignKey": false,
 									"nullable": false,
@@ -480,7 +480,7 @@
 										"$ref": "AAAAAAFfqm/ESrj0Q1g="
 									},
 									"name": "id",
-									"type": "INTEGER",
+									"type": "SERIAL",
 									"primaryKey": true,
 									"foreignKey": false,
 									"nullable": false,
@@ -765,7 +765,7 @@
 										"$ref": "AAAAAAFfqm/R8rkBDaM="
 									},
 									"name": "id",
-									"type": "INTEGER",
+									"type": "SERIAL",
 									"primaryKey": true,
 									"foreignKey": false,
 									"nullable": false,
@@ -891,7 +891,7 @@
 										"$ref": "AAAAAAFfqm/onrkOr7I="
 									},
 									"name": "id",
-									"type": "INTEGER",
+									"type": "SERIAL",
 									"primaryKey": true,
 									"foreignKey": false,
 									"nullable": false,
@@ -1027,7 +1027,7 @@
 										"$ref": "AAAAAAFfqm/3N7kb3rY="
 									},
 									"name": "id",
-									"type": "INTEGER",
+									"type": "SERIAL",
 									"primaryKey": true,
 									"foreignKey": false,
 									"nullable": false,
@@ -1320,7 +1320,7 @@
 										"$ref": "AAAAAAFfqnA3WLk3LFs="
 									},
 									"name": "id",
-									"type": "INTEGER",
+									"type": "SERIAL",
 									"primaryKey": true,
 									"foreignKey": false,
 									"nullable": false,
