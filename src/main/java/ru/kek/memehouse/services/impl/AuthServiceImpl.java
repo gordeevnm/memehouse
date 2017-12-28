@@ -40,11 +40,12 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public void logout(AuthenticationToken token) {
-
+		token.getCredentials().delete();
 	}
 
 	@Override
 	public AuthInfo registration(AuthInfo authInfo) {
+
 		return null;
 	}
 }

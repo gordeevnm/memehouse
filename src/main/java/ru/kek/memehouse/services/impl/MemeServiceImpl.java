@@ -6,36 +6,47 @@ import ru.kek.memehouse.models.Meme;
 import ru.kek.memehouse.models.Tag;
 import ru.kek.memehouse.services.MemeService;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
  * gordeevnm@gmail.com
- * 07.10.17
+ * 12.12.17
  */
 @Service
 public class MemeServiceImpl implements MemeService {
 	@Override
-	public List<Meme> search(String query, String name, List<Tag> tags, int count, int offset, AuthenticationToken token) {
-		return null;
+	public List<Meme> search(String query, String type, String visibility, List<Tag> tags, Timestamp periodStart, Timestamp periodEnd, int count, int offset, AuthenticationToken token) {
+		throw new UnsupportedOperationException("Service not implemented");
 	}
-
+	
 	@Override
 	public Meme add(Meme meme, AuthenticationToken token) {
-		return null;
+	
 	}
-
+	
 	@Override
-	public Meme get(long memeId, AuthenticationToken token) {
-		return null;
+	public Meme get(int memeId, AuthenticationToken token) {
+		throw new UnsupportedOperationException("Service not implemented");
 	}
-
+	
 	@Override
-	public Meme edit(Meme meme, AuthenticationToken token) {
-		return null;
+	public Meme edit(int memeId, Meme meme, AuthenticationToken token) {
+		throw new UnsupportedOperationException("Service not implemented");
 	}
-
+	
 	@Override
-	public void delete(long memeId, AuthenticationToken token) {
-
+	public void delete(int memeId, AuthenticationToken token) {
+		throw new UnsupportedOperationException("Service not implemented");
+	}
+	
+	@Override
+	public void save(int memeId, AuthenticationToken token) {
+		throw new UnsupportedOperationException("Service not implemented");
+	}
+	
+	@Override
+	public void addNote(int memeId, String note, AuthenticationToken token) {
+		throw new UnsupportedOperationException("Service not implemented");
 	}
 }
