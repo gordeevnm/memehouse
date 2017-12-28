@@ -133,7 +133,8 @@ COMMENT ON COLUMN public.attachment.video_url
 
 CREATE TABLE public.saved_meme (
 	user_id integer NOT NULL,
-	meme_id integer NOT NULL
+	meme_id integer NOT NULL,
+	saved_time timestamp NOT NULL
 );
 
 CREATE INDEX ON public.saved_meme
