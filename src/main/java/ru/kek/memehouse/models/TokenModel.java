@@ -14,7 +14,7 @@ import java.util.Random;
  */
 @Builder
 @AllArgsConstructor
-public class TokenModel extends Model {
+public class TokenModel extends MongoDoc {
 	private static final int TOKEN_LENGTH = 60;
 
 	private long id;
@@ -25,7 +25,19 @@ public class TokenModel extends Model {
 	}
 
 	private static final String CREATE_TOKEN_SQL =
-			"INSERT INTO token (user_id, token) VALUES (?, ?)";
+			"INSERT INTO token (user_id, token) VALUES (?, ?) RETURNING *";
+
+	private static final String DELETE_TOKEN_SQL =
+			"DELETE FROM token WHERE token = ?";
+
+	public void delete() {
+		getJdbcTemplate().update(DELETE_TOKEN_SQL, this.token);
+	}
+
+	@Override
+	public String toString() {
+		return token;
+	}
 
 	public static TokenModel create(User user) {
 		String token = generate();
@@ -45,6 +57,7 @@ public class TokenModel extends Model {
 			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 	};
+
 	public static final Random random = new Random();
 
 	private static String generate() {
@@ -53,10 +66,5 @@ public class TokenModel extends Model {
 			buffer[i] = CHARS[random.nextInt(CHARS.length)];
 
 		return new String(buffer);
-	}
-
-	@Override
-	public String toString() {
-		return token;
 	}
 }
