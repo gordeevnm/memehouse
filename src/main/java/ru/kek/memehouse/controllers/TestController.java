@@ -1,7 +1,10 @@
 package ru.kek.memehouse.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kek.memehouse.models.User;
 
@@ -11,15 +14,28 @@ import ru.kek.memehouse.models.User;
  */
 @RestController
 public class TestController {
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public User test0(Authentication auth) {
+		System.out.println("index");
+		if (auth == null)
+			return User.builder().build();
+		else
+			return (User) auth.getDetails();
+	}
 	@RequestMapping(value = "/api/test", method = RequestMethod.GET)
-	public String test1() {
-		return "test1";
+	@ResponseStatus(HttpStatus.OK)
+	public User test1(Authentication auth) {
+		System.out.println("/api/test");
+		return (User) auth.getDetails();
 	}
 
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public User test2() {
-		return User.builder()
-				.username("test")
-				.build();
+	@ResponseStatus(HttpStatus.OK)
+	public User test2(Authentication auth) {
+		if (auth == null)
+			return User.builder().build();
+		else
+			return (User) auth.getDetails();
 	}
 }
