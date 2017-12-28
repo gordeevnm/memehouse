@@ -6,7 +6,7 @@ import java.sql.Date;
  * gordeevnm@gmail.com
  * 07.10.17
  */
-public class FileModel extends Model {
+public class FileModel extends MongoDoc {
 	private String url;
 	private long size;
 	private String mime;

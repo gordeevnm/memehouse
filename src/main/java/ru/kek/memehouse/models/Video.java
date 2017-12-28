@@ -10,6 +10,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 		fieldVisibility = JsonAutoDetect.Visibility.ANY,
 		getterVisibility = JsonAutoDetect.Visibility.NONE,
 		setterVisibility = JsonAutoDetect.Visibility.NONE)
-public class Video extends Model implements Attachment {
+public class Video extends Attachment {
 	private String url;
 }
