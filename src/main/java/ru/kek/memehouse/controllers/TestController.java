@@ -23,13 +23,14 @@ public class TestController {
 		else
 			return (User) auth.getDetails();
 	}
+	
 	@RequestMapping(value = "/api/test", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public User test1(Authentication auth) {
 		System.out.println("/api/test");
 		return (User) auth.getDetails();
 	}
-
+	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public User test2(Authentication auth) {

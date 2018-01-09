@@ -5,15 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.sql.Timestamp;
+
 /**
  * gordeevnm@gmail.com
- * 07.10.17
+ * 09.01.18
  */
 @Data
 @Accessors(chain = true)
 @Builder
 @AllArgsConstructor
-public class Tag {
+public class Ban {
 	private int id;
-	private String tag;
+	private int userId;
+	private int moderatorId;
+	private Timestamp startTime;
+	private Timestamp endTime;
+	private String reason;
+	private boolean isActive;
 }

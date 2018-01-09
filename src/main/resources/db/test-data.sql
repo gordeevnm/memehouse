@@ -71,8 +71,7 @@ VALUES (1, 11, 1, 'image', NULL),
 
 INSERT INTO meme (id, upload_time, attachment_id, description, name, uploaded_by, is_public)
 VALUES
-	(1, current_timestamp, 1, 'Чувак с тыквой на голове танцует. 3 кадра с подписями, по 1 слогу в каждом кадре', 'Ни ху я', 1,
-	 TRUE),
+	(1, current_timestamp, 1, 'Чувак с тыквой на голове танцует. 3 кадра с подписями, по 1 слогу в каждом кадре', 'Ни ху я', 1, TRUE),
 	(2, current_timestamp, 2, 'Грустная зеленая лягушка', 'Pepe Frog', 1, TRUE),
 	(3, current_timestamp, 3, 'Старик, скрывающий боль за фальшивой улыбкой', 'Harold hide the pain', 1, TRUE),
 	(4, current_timestamp, 4, 'Негр-актер тычет пальцем себе в висок', 'Негр умник', 1, TRUE),
@@ -127,7 +126,7 @@ VALUES (1, 2),
 	(16, 7),
 	(8, 9),
 	(21, 24),
-	(16, 5),
+	(16, 5);
 
 INSERT INTO meme_tag (meme_id, tag_id)
 VALUES (1, 3), (1, 16),

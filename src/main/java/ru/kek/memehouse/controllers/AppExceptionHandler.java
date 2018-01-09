@@ -1,73 +1,71 @@
 package ru.kek.memehouse.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.kek.memehouse.exceptions.BadRequestException;
+import ru.kek.memehouse.exceptions.ValidationException;
+import ru.kek.memehouse.exceptions.dto.ExceptionDto;
+import ru.kek.memehouse.exceptions.dto.ValidationExceptionDto;
 
-import javax.validation.ValidationException;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * gordeevnm@gmail.com
- * 06.10.17
+ * 08.01.18
  */
 @ControllerAdvice
-public class AppExceptionHandler extends ResponseEntityExceptionHandler {
-
-	private static final HttpHeaders headers;
-
-	static {
-		headers = new HttpHeaders();
-		headers.set("Content-Type", "application/json;charset=UTF-8");
+public class AppExceptionHandler {
+	
+	@ExceptionHandler({BindException.class})
+	@ResponseBody
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionDto<List<ValidationExceptionDto>> validationExceptionHandler(BindException e) {
+		System.out.println("BindException");
+		List<ValidationExceptionDto> result = new ArrayList<>();
+		e.getFieldErrors().forEach(fieldError -> result.add(
+				new ValidationExceptionDto(
+						fieldError.getField(),
+						fieldError.getDefaultMessage()
+				)
+		));
+		
+		return ExceptionDto.<List<ValidationExceptionDto>>builder()
+				.cause("ValidationException")
+				.data(result)
+				.build();
 	}
-
-	@ExceptionHandler({AuthenticationException.class})
-	public ResponseEntity<Object> incorrectAuthData(Exception e, WebRequest request) {
-		return handleExceptionInternal(
-				e,
-				new ErrorDto(e.getMessage()),
-				headers,
-				HttpStatus.FORBIDDEN,
-				request);
+	
+	@ExceptionHandler({ValidationException.class})
+	@ResponseBody
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionDto<List<ValidationExceptionDto>> validationExceptionHandler(ValidationException e) {
+		System.out.println("BindException");
+		List<ValidationExceptionDto> result = new ArrayList<>();
+		e.getErrors().forEach(exceptionDto -> result.add(
+				new ValidationExceptionDto(
+						exceptionDto.getField(),
+						exceptionDto.getMessage()
+				)
+		));
+		
+		return ExceptionDto.<List<ValidationExceptionDto>>builder()
+				.cause("ValidationException")
+				.data(result)
+				.build();
 	}
-
-	@ExceptionHandler({BadRequestException.class, ValidationException.class})
-	public ResponseEntity<Object> badRequest(Exception e, WebRequest request) {
-		return handleExceptionInternal(
-				e,
-				new ErrorDto(e.getMessage()),
-				headers,
-				HttpStatus.BAD_REQUEST,
-				request);
-	}
-
-	@ExceptionHandler({Exception.class, SQLException.class})
-	public ResponseEntity<Object> defaultException(Exception e, WebRequest request) {
-		e.printStackTrace();
-		return handleExceptionInternal(
-				e,
-				new ErrorDto(e.getMessage()),
-				headers,
-				HttpStatus.INTERNAL_SERVER_ERROR,
-				request);
-	}
-
-	@JsonAutoDetect(
-			fieldVisibility = JsonAutoDetect.Visibility.ANY,
-			getterVisibility = JsonAutoDetect.Visibility.NONE,
-			setterVisibility = JsonAutoDetect.Visibility.NONE)
-	private static class ErrorDto {
-		private String message;
-
-		ErrorDto(String message) {
-			this.message = message;
-		}
+	
+	@ExceptionHandler({BadRequestException.class})
+	@ResponseBody
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ExceptionDto<String> badRequestHandler(BadRequestException e) {
+		return ExceptionDto.<String>builder()
+				.cause("BadRequestException")
+				.message(e.getMessage())
+				.build();
 	}
 }

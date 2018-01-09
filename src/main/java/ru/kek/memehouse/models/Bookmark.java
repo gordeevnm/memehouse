@@ -5,15 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.sql.Timestamp;
+
 /**
  * gordeevnm@gmail.com
- * 07.10.17
+ * 09.01.18
  */
 @Data
 @Accessors(chain = true)
 @Builder
 @AllArgsConstructor
-public class Tag {
-	private int id;
-	private String tag;
+public class Bookmark {
+	private Meme meme;
+	private BookmarkGroup group;
+	private Timestamp addingTime;
 }
