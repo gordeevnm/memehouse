@@ -1,10 +1,10 @@
 package ru.kek.memehouse.services.impl;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import ru.kek.memehouse.configuration.security.AuthenticationToken;
 import ru.kek.memehouse.models.Meme;
 import ru.kek.memehouse.models.Tag;
-import ru.kek.memehouse.services.MemeService;
+import ru.kek.memehouse.services.interfaces.MemeService;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,37 +16,37 @@ import java.util.List;
 @Service
 public class MemeServiceImpl implements MemeService {
 	@Override
-	public List<Meme> search(String query, String type, String visibility, List<Tag> tags, Timestamp periodStart, Timestamp periodEnd, int count, int offset, AuthenticationToken token) {
+	public List<Meme> search(String query, String type, String visibility, List<Tag> tags, Timestamp periodStart, Timestamp periodEnd, int count, int offset, Authentication auth) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
 	@Override
-	public Meme add(Meme meme, AuthenticationToken token) {
+	public Meme add(Meme meme, Authentication auth) {
 	
 	}
 	
 	@Override
-	public Meme get(int memeId, AuthenticationToken token) {
+	public Meme get(int memeId, Authentication auth) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
 	@Override
-	public Meme edit(int memeId, Meme meme, AuthenticationToken token) {
+	public Meme edit(int memeId, Meme meme, Authentication auth) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
 	@Override
-	public void delete(int memeId, AuthenticationToken token) {
+	public void delete(int memeId, Authentication auth) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
 	@Override
-	public void save(int memeId, AuthenticationToken token) {
+	public void save(int memeId, Authentication auth) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
 	@Override
-	public void addNote(int memeId, String note, AuthenticationToken token) {
+	public void addNote(int memeId, String note, Authentication auth) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 }
