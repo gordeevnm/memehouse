@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ru.kek.memehouse.exceptions.BadRequestException;
-import ru.kek.memehouse.exceptions.ValidationException;
+import ru.kek.memehouse.exceptions.*;
 import ru.kek.memehouse.exceptions.dto.ExceptionDto;
 import ru.kek.memehouse.exceptions.dto.ValidationExceptionDto;
 
@@ -65,6 +64,36 @@ public class AppExceptionHandler {
 	public ExceptionDto<String> badRequestHandler(BadRequestException e) {
 		return ExceptionDto.<String>builder()
 				.cause("BadRequestException")
+				.message(e.getMessage())
+				.build();
+	}
+	
+	@ExceptionHandler({NotFoundException.class})
+	@ResponseBody
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ExceptionDto<String> notFoundHandler(NotFoundException e) {
+		return ExceptionDto.<String>builder()
+				.cause("NotFoundException")
+				.message(e.getMessage())
+				.build();
+	}
+	
+	@ExceptionHandler({ForbiddenException.class})
+	@ResponseBody
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ExceptionDto<String> forbiddenHandler(ForbiddenException e) {
+		return ExceptionDto.<String>builder()
+				.cause("ForbiddenException")
+				.message(e.getMessage())
+				.build();
+	}
+	
+	@ExceptionHandler({UnauthorizedException.class})
+	@ResponseBody
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public ExceptionDto<String> unauthorizedHandler(UnauthorizedException e) {
+		return ExceptionDto.<String>builder()
+				.cause("UnauthorizedException")
 				.message(e.getMessage())
 				.build();
 	}

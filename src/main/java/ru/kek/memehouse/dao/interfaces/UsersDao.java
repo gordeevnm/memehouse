@@ -1,4 +1,4 @@
-package ru.kek.memehouse.dao;
+package ru.kek.memehouse.dao.interfaces;
 
 import ru.kek.memehouse.models.User;
 
@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface UsersDao {
 	Optional<User> findByUsername(String username);
 	
-	Optional<User> findWithCurrentBanByUsername(String username);
+	Optional<User> findWithFutureBansByUsername(String username);
+	
+	void create(User user);
 }

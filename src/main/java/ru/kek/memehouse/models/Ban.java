@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -15,7 +16,7 @@ import java.sql.Timestamp;
 @Accessors(chain = true)
 @Builder
 @AllArgsConstructor
-public class Ban {
+public class Ban implements Serializable {
 	private int id;
 	private int userId;
 	private int moderatorId;
