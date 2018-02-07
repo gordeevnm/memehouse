@@ -151,3 +151,22 @@ CREATE TABLE bookmark
 CREATE UNIQUE INDEX bookmark_meme_id_group_id_uindex
 	ON bookmark (meme_id, group_id);
 
+CREATE VIEW user_with_bans_view AS
+	SELECT
+		u.id                AS u_id,
+		u.username          AS u_username,
+		u.password          AS u_password,
+		u.email             AS u_email,
+		u.registration_time AS u_registration_time,
+		u.roles             AS u_roles,
+		u.is_deleted        AS u_is_deleted,
+		b.id                AS b_id,
+		b.user_id           AS b_user_id,
+		b.moderator_id      AS b_moderator_id,
+		b.start_time        AS b_start_time,
+		b.end_time          AS b_end_time,
+		b.reason            AS b_reason,
+		b.is_active         AS b_is_active
+	FROM ("user" u
+		LEFT JOIN ban b ON ((u.id = b.user_id)));
+

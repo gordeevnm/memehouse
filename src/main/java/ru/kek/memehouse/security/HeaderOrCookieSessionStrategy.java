@@ -1,4 +1,4 @@
-package ru.kek.memehouse.configuration.security;
+package ru.kek.memehouse.security;
 
 import org.springframework.session.Session;
 import org.springframework.session.web.http.CookieHttpSessionStrategy;
@@ -16,7 +16,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
  * 29.12.17
  */
 public class HeaderOrCookieSessionStrategy implements HttpSessionStrategy {
-	private static final String HEADER_NAME = "SESSION";
+	private static final String HEADER_NAME = "X-Auth-Token";
 	private static final String COOKIE_NAME = "SESSION";
 	
 	private final HeaderHttpSessionStrategy headerStrategy;
