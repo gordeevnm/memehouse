@@ -1,53 +1,57 @@
 package ru.kek.memehouse.models;
 
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.SneakyThrows;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.jetbrains.annotations.NotNull;
-import org.springframework.jdbc.core.RowMapper;
-import ru.kek.memehouse.services.ObjectMapperBean;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
-import java.sql.ResultSet;
+import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
+
+@Entity
+@Table(name = "meme")
+@TypeDefs({
+		@TypeDef(
+				name = "string-array",
+				typeClass = StringArrayType.class
+		)
+})
 
 @Data
 @Accessors(chain = true)
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Meme {
-	private int id;
-	private int uploadedBy;
-	private String description;
-	private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "uploaded_by", nullable = false)
+	private User uploadedBy;
+	@Column(name = "upload_time", nullable = false)
 	private Timestamp uploadTime;
+	@Column(name = "description")
+	private String description;
+	@Column(name = "name", nullable = false)
+	private String name;
+	@Column(name = "is_public")
 	private boolean isPublic;
+	@Column(name = "lurkmore_link")
 	private String lurkmoreLink;
-	private Attachment attachment;
-	private List<String> tags;
+	@OneToOne
+	@JoinColumn(name = "picture")
+	private Picture picture;
+	@Type(type = "string-array")
+	@Column(name = "tags", columnDefinition = "text[]")
+	private String[] tags;
+	@Column(name = "is_deleted")
 	private boolean isDeleted;
+	@Transient
 	private String userNote;
-	
-	public static final RowMapper<Meme> DEF_ROW_MAPPER = new DefaultRowMapper();
-	
-	private static class DefaultRowMapper implements RowMapper<Meme> {
-		@NotNull
-		@SneakyThrows
-		public Meme mapRow(@NotNull ResultSet rs, int rowNum) {
-			return Meme.builder()
-					.uploadedBy(rs.getInt("uploadedBy"))
-					.description(rs.getString("description"))
-					.name(rs.getString("name"))
-					.uploadTime(rs.getTimestamp("uploadTime"))
-					.isPublic(rs.getBoolean("isPublic"))
-					.lurkmoreLink(rs.getString("lurkmoreLink"))
-					.attachment(ObjectMapperBean.get().readValue(rs.getString("attachment"), Attachment.class))
-					.tags(Arrays.asList((String[]) rs.getArray("tags").getArray()))
-					.isDeleted(rs.getBoolean("isDeleted"))
-					.build();
-		}
-	}
 }
