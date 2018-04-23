@@ -13,13 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.web.http.HttpSessionStrategy;
 import ru.kek.memehouse.dto.UserDto;
 import ru.kek.memehouse.exceptions.dto.ExceptionDto;
 import ru.kek.memehouse.models.User;
-import ru.kek.memehouse.security.details.UserDetailsImpl;
-import ru.kek.memehouse.services.AuthUtils;
 import ru.kek.memehouse.services.ObjectMapperBean;
 
 import javax.servlet.http.HttpSession;
@@ -45,67 +41,59 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.authorizeRequests()
-				.anyRequest().permitAll()
-				
-				.and()
-				.formLogin()
-				.loginProcessingUrl("/api/login")
-				.permitAll()
-				.usernameParameter("username")
-				.passwordParameter("password")
-				.successHandler((request, response, authentication) -> {
-					response.setStatus(Response.SC_OK);
-					response.setHeader("Content-Type", "application/json;charset=UTF-8");
-					HttpSession session = request.getSession();
-					User user = ((UserDetailsImpl) authentication.getPrincipal()).getRawUser();
-					UserDto userDto = UserDto.from(user);
-					userDto.setAuthToken(session.getId());
-					response.getWriter().print(ObjectMapperBean.get().writeValueAsString(userDto));
-					session.setAttribute(
-							FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME,
-							String.valueOf(AuthUtils.getUserId(authentication))
-					);
-				})
-				.failureHandler((request, response, exception) -> {
-					response.setStatus(Response.SC_FORBIDDEN);
-					response.setHeader("Content-Type", "application/json;charset=UTF-8");
-					response.getWriter().print(
-							ObjectMapperBean.get().writeValueAsString(
-									new ExceptionDto<>(
-											"AuthenticationException",
-											"Неверный логин или пароль",
-											exception.getMessage()
-									)
-							)
-					);
-					response.getWriter().flush();
-					response.getWriter().close();
-				})
-				
-				.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-				
-				.and()
-				.logout()
-				.logoutUrl("/api/logout")
-				.permitAll()
-				
-				.and()
-				.csrf()
-				.disable();
+			  .authorizeRequests()
+			  .anyRequest().permitAll()
+			  
+			  .and()
+			  .formLogin()
+			  .loginProcessingUrl("/api/login")
+			  .permitAll()
+			  .usernameParameter("username")
+			  .passwordParameter("password")
+			  .successHandler((request, response, authentication) -> {
+				  response.setStatus(Response.SC_OK);
+				  response.setHeader("Content-Type", "application/json;charset=UTF-8");
+				  HttpSession session = request.getSession();
+				  User user = (User) authentication.getPrincipal();
+				  UserDto userDto = UserDto.from(user);
+				  userDto.setAuthToken(session.getId());
+				  response.getWriter().print(ObjectMapperBean.get().writeValueAsString(userDto));
+			  })
+			  .failureHandler((request, response, exception) -> {
+				  response.setStatus(Response.SC_FORBIDDEN);
+				  response.setHeader("Content-Type", "application/json;charset=UTF-8");
+				  response.getWriter().print(
+						 ObjectMapperBean.get().writeValueAsString(
+								new ExceptionDto<>(
+									  "AuthenticationException",
+									  "Неверный логин или пароль",
+									  exception.getMessage()
+								)
+						 )
+				  );
+				  response.getWriter().flush();
+				  response.getWriter().close();
+			  })
+			  
+			  .and()
+			  .sessionManagement()
+			  .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+			  
+			  .and()
+			  .logout()
+			  .logoutUrl("/api/logout")
+			  .permitAll()
+			  
+			  .and()
+			  .csrf()
+			  .disable();
 	}
 	
-	@Bean
-	public HttpSessionStrategy httpSessionStrategy() {
-		return new HeaderOrCookieSessionStrategy();
-	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
-				.userDetailsService(userDetailsService)
-				.passwordEncoder(passwordEncoder());
+			  .userDetailsService(userDetailsService)
+			  .passwordEncoder(passwordEncoder());
 	}
 }

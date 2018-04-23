@@ -32,10 +32,10 @@ public class Meme {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "uploaded_by", nullable = false)
-	private User uploadedBy;
-	@Column(name = "upload_time", nullable = false)
-	private Timestamp uploadTime;
+	@JoinColumn(name = "created_by", nullable = false)
+	private User createdBy;
+	@Column(name = "create_time", nullable = false)
+	private Timestamp createTime;
 	@Column(name = "description")
 	private String description;
 	@Column(name = "name", nullable = false)
@@ -44,14 +44,14 @@ public class Meme {
 	private boolean isPublic;
 	@Column(name = "lurkmore_link")
 	private String lurkmoreLink;
-	@OneToOne
-	@JoinColumn(name = "picture")
-	private Picture picture;
+	@Column(name = "picture_id")
+	private String pictureId;
 	@Type(type = "string-array")
-	@Column(name = "tags", columnDefinition = "text[]")
+	@Column(name = "tags_array", columnDefinition = "text[]")
 	private String[] tags;
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
+	// TODO: 22.04.18 переделать
 	@Transient
 	private String userNote;
 }

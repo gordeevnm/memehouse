@@ -34,6 +34,6 @@ public class RolesDaoJdbcImpl implements RolesDao {
 		params.put("role", role);
 		
 		namedJdbcTemplate.update(GRANT_ROLE_SQL, params);
-		user.getRoles().add(role);
+		user.addRole(role);
 	}
 }

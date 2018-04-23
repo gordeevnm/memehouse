@@ -13,8 +13,6 @@ import ru.kek.memehouse.services.interfaces.RegistrationService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.HashSet;
 
 /**
  * gordeevnm@gmail.com
@@ -34,7 +32,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 				.password(passwordEncoder.encode(registrationDto.getPassword()))
 				.email(registrationDto.getEmail())
 				.registrationTime(new Timestamp(System.currentTimeMillis()))
-				.roles(new HashSet<>(Collections.singletonList(Roles.ROLE_REGISTERED_USER)))
+				.roles(new String[]{Roles.ROLE_REGISTERED_USER.getAuthority()})
 				.isDeleted(false)
 				.build();
 		

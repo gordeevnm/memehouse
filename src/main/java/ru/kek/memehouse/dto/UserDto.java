@@ -5,15 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import org.springframework.security.core.GrantedAuthority;
 import ru.kek.memehouse.models.Ban;
 import ru.kek.memehouse.models.User;
 
 import java.sql.Timestamp;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * gordeevnm@gmail.com
@@ -30,8 +27,8 @@ import java.util.stream.Collectors;
 		creatorVisibility = JsonAutoDetect.Visibility.NONE
 )
 public class UserDto {
-	private int id;
-	private Set<String> roles;
+	private Long id;
+	private List<String> roles;
 	private String username;
 	private String email;
 	private Timestamp registrationTime;
@@ -42,18 +39,12 @@ public class UserDto {
 	public static UserDto from(User user) {
 		return UserDto.builder()
 				.id(user.getId())
-				.roles(toStringSet(user.getRoles()))
+				.roles(Arrays.asList(user.getRoles()))
 				.username(user.getUsername())
 				.email(user.getEmail())
 				.registrationTime(user.getRegistrationTime())
 				.isDeleted(user.isDeleted())
-				.futureBansList(user.getFutureBansList() != null ? user.getFutureBansList() : Collections.emptyList())
+				.futureBansList(user.getFutureBansList())
 				.build();
-	}
-	
-	private static Set<String> toStringSet(Set<GrantedAuthority> roles) {
-		return roles.stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.toSet());
 	}
 }

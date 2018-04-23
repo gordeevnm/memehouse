@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import ru.kek.memehouse.models.Meme;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,14 +28,14 @@ import java.util.List;
 )
 public class MemeDto {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private Integer id;
-	private Integer uploadedBy;
+	private Long id;
+	private Long createdBy;
 	private String description;
 	private String name;
-	private Timestamp uploadTime;
+	private Timestamp createTime;
 	private Boolean isPublic;
 	private String lurkmoreLink;
-	private AttachmentDto attachment;
+	private String pictureId;
 	private List<String> tags;
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private Boolean isDeleted;
@@ -46,8 +47,8 @@ public class MemeDto {
 				.name(this.name)
 				.isPublic(this.isPublic)
 				.lurkmoreLink(this.lurkmoreLink)
-				.attachment(this.attachment.toModel())
-				.tags(this.tags)
+				.pictureId(this.pictureId)
+				.tags(((String[]) this.tags.toArray()))
 				.build();
 		
 	}
@@ -55,14 +56,14 @@ public class MemeDto {
 	public static MemeDto from(Meme meme) {
 		return MemeDto.builder()
 				.id(meme.getId())
-				.uploadedBy(meme.getUploadedBy())
+				.createdBy(meme.getCreatedBy().getId())
 				.description(meme.getDescription())
 				.name(meme.getName())
-				.uploadTime(meme.getUploadTime())
+				.createTime(meme.getCreateTime())
 				.isPublic(meme.isPublic())
 				.lurkmoreLink(meme.getLurkmoreLink())
-				.attachment(AttachmentDto.from(meme.getAttachment()))
-				.tags(meme.getTags())
+				.pictureId(meme.getPictureId())
+				.tags(Arrays.asList(meme.getTags()))
 				.isDeleted(meme.isDeleted())
 				.userNote(meme.getUserNote())
 				.build();

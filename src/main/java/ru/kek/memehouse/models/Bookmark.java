@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Entity
 @Table(name = "bookmark")
@@ -24,8 +23,6 @@ public class Bookmark {
 	@ManyToOne
 	@JoinColumn(name = "group_id", nullable = false)
 	private BookmarkGroup group;
-	@Column(name = "adding_time", nullable = false)
-	private Timestamp addingTime;
 	@ManyToOne
 	@JoinColumn(name = "meme_id", nullable = false)
 	private Meme meme;

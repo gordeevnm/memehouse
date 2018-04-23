@@ -13,6 +13,7 @@ import ru.kek.memehouse.services.interfaces.MemeService;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * gordeevnm@gmail.com
@@ -31,8 +32,8 @@ public class MemeServiceImpl implements MemeService {
 	@Override
 	public MemeDto add(MemeDto memeDto) {
 		Meme meme = memeDto.toModel()
-				.setUploadedBy(AuthUtils.currentUserId())
-				.setUploadTime(new Timestamp(System.currentTimeMillis()))
+				.setCreatedBy(AuthUtils.authenticatedUser())
+				.setCreateTime(new Timestamp(System.currentTimeMillis()))
 				.setDeleted(false);
 		
 		memesDao.create(meme);
@@ -44,7 +45,7 @@ public class MemeServiceImpl implements MemeService {
 	public MemeDto get(int memeId) {
 		Meme meme = memesDao.findById(memeId)
 				.filter(m -> m.isPublic() ||
-						m.getUploadedBy() == AuthUtils.currentUserId() ||
+						Objects.equals(m.getCreatedBy().getId(), AuthUtils.authenticatedUser().getId()) ||
 						AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_MEME_MODERATOR) ||
 						AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_ADMIN))
 				.orElseThrow(() -> new NotFoundException("Мем не найден"));

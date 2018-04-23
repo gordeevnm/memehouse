@@ -1,0 +1,15 @@
+zombodb_postgres:
+  build: ./postgres
+  environment:
+   - POSTGRES_PASSWORD=postgres
+   - POSTGRES_USER=postgres
+   - POSTGRES_DB=memehouse
+  ports:
+   - "5555:5432"
+  links:
+   - zombodb_elastic
+zombodb_elastic:
+  build: ./elasticsearch
+  ports:
+   - "9200:9200"
+   - "9300:9300"

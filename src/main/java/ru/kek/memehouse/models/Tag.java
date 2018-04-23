@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.sql.Timestamp;
 
 /**
  * gordeevnm@gmail.com
@@ -24,9 +24,10 @@ public class Tag {
 	@Column(name = "memes_count")
 	private int memesCount;
 	@ManyToOne()
-	@JoinColumn(name = "general_tag")
-	private Tag generalTag;
-	@OneToMany
-	@JoinColumn(name = "general_tag")
-	private Set<Tag> derivativeTags;
+	@JoinColumn(name = "merged_with")
+	private Tag mergedWith;
+	@Column(name = "merge_time")
+	private Timestamp mergeTime;
+	@Column(name = "merged_by")
+	private User mergedBy;
 }

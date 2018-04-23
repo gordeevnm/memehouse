@@ -2,8 +2,8 @@ package ru.kek.memehouse.services;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ru.kek.memehouse.security.details.UserDetailsImpl;
 import ru.kek.memehouse.exceptions.UnauthorizedException;
+import ru.kek.memehouse.models.User;
 
 /**
  * gordeevnm@gmail.com
@@ -17,11 +17,11 @@ public class AuthUtils {
 	public static final String EMAIL_REGEX = ".*@.*";
 	public static final String USERNAME_FOR_UPDATING_REGEX = "^[a-z]+[a-z._0-9]*$";
 	
-	public static int getUserId(Authentication authentication) {
+	public static Long getUserId(Authentication authentication) {
 		if (authentication == null) {
 			throw new UnauthorizedException("Пользователь не авторизован");
 		}
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		User userDetails = (User) authentication.getPrincipal();
 		return userDetails.getId();
 	}
 	
@@ -29,7 +29,11 @@ public class AuthUtils {
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
 	
-	public static int currentUserId() {
+	public static Long currentUserId() {
 		return getUserId(currentAuthentication());
+	}
+	
+	public static User authenticatedUser() {
+		return (User) currentAuthentication();
 	}
 }
