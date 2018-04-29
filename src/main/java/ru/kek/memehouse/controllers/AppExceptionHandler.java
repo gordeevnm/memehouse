@@ -27,16 +27,16 @@ public class AppExceptionHandler {
 		System.out.println("BindException");
 		List<ValidationExceptionDto> result = new ArrayList<>();
 		e.getFieldErrors().forEach(fieldError -> result.add(
-				new ValidationExceptionDto(
-						fieldError.getField(),
-						fieldError.getDefaultMessage()
-				)
+			  new ValidationExceptionDto(
+					 fieldError.getField(),
+					 fieldError.getDefaultMessage()
+			  )
 		));
 		
 		return ExceptionDto.<List<ValidationExceptionDto>>builder()
-				.cause("ValidationException")
-				.data(result)
-				.build();
+			  .cause("ValidationException")
+			  .data(result)
+			  .build();
 	}
 	
 	@ExceptionHandler({ValidationException.class})
@@ -46,16 +46,16 @@ public class AppExceptionHandler {
 		System.out.println("BindException");
 		List<ValidationExceptionDto> result = new ArrayList<>();
 		e.getErrors().forEach(exceptionDto -> result.add(
-				new ValidationExceptionDto(
-						exceptionDto.getField(),
-						exceptionDto.getMessage()
-				)
+			  new ValidationExceptionDto(
+					 exceptionDto.getField(),
+					 exceptionDto.getMessage()
+			  )
 		));
 		
 		return ExceptionDto.<List<ValidationExceptionDto>>builder()
-				.cause("ValidationException")
-				.data(result)
-				.build();
+			  .cause("ValidationException")
+			  .data(result)
+			  .build();
 	}
 	
 	@ExceptionHandler({BadRequestException.class})
@@ -63,9 +63,9 @@ public class AppExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDto<String> badRequestHandler(BadRequestException e) {
 		return ExceptionDto.<String>builder()
-				.cause("BadRequestException")
-				.message(e.getMessage())
-				.build();
+			  .cause("BadRequestException")
+			  .message(e.getMessage())
+			  .build();
 	}
 	
 	@ExceptionHandler({NotFoundException.class})
@@ -73,9 +73,9 @@ public class AppExceptionHandler {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ExceptionDto<String> notFoundHandler(NotFoundException e) {
 		return ExceptionDto.<String>builder()
-				.cause("NotFoundException")
-				.message(e.getMessage())
-				.build();
+			  .cause("NotFoundException")
+			  .message(e.getMessage())
+			  .build();
 	}
 	
 	@ExceptionHandler({ForbiddenException.class})
@@ -83,9 +83,9 @@ public class AppExceptionHandler {
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public ExceptionDto<String> forbiddenHandler(ForbiddenException e) {
 		return ExceptionDto.<String>builder()
-				.cause("ForbiddenException")
-				.message(e.getMessage())
-				.build();
+			  .cause("ForbiddenException")
+			  .message(e.getMessage())
+			  .build();
 	}
 	
 	@ExceptionHandler({UnauthorizedException.class})
@@ -93,8 +93,8 @@ public class AppExceptionHandler {
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public ExceptionDto<String> unauthorizedHandler(UnauthorizedException e) {
 		return ExceptionDto.<String>builder()
-				.cause("UnauthorizedException")
-				.message(e.getMessage())
-				.build();
+			  .cause("UnauthorizedException")
+			  .message(e.getMessage())
+			  .build();
 	}
 }

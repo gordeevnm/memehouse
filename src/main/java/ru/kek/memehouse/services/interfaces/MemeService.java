@@ -1,6 +1,7 @@
 package ru.kek.memehouse.services.interfaces;
 
 import ru.kek.memehouse.dto.MemeDto;
+import ru.kek.memehouse.dto.MemeModifyDto;
 import ru.kek.memehouse.dto.SearchQuery;
 import ru.kek.memehouse.models.Meme;
 
@@ -13,11 +14,11 @@ import java.util.List;
 public interface MemeService {
 	List<Meme> search(SearchQuery query);
 	
-	MemeDto add(MemeDto meme);
+	MemeDto create(MemeModifyDto meme);
 	
 	MemeDto get(int memeId);
 	
-	Meme edit(int memeId, Meme meme);
+	Meme put(int memeId, MemeModifyDto meme);
 	
 	void delete(int memeId);
 	

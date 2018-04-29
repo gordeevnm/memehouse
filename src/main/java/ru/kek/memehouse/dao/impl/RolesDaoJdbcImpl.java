@@ -19,10 +19,10 @@ import java.util.Map;
 public class RolesDaoJdbcImpl implements RolesDao {
 	@Language("PostgreSQL")
 	private static final String GRANT_ROLE_SQL =
-			"UPDATE public.user " +
-					"SET roles = array_append(roles, 'role3') " +
-					"WHERE id = :userId " +
-					"   AND NOT roles @> ARRAY[:role]::VARCHAR[]";
+		  "UPDATE public.user " +
+				 "SET roles = array_append(roles, 'role3') " +
+				 "WHERE id = :userId " +
+				 "   AND NOT roles @> ARRAY[:role]::VARCHAR[]";
 	
 	@Autowired
 	private NamedParameterJdbcTemplate namedJdbcTemplate;

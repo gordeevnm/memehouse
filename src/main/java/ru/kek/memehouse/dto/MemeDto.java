@@ -21,10 +21,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @JsonAutoDetect(
-		fieldVisibility = JsonAutoDetect.Visibility.ANY,
-		getterVisibility = JsonAutoDetect.Visibility.NONE,
-		setterVisibility = JsonAutoDetect.Visibility.NONE,
-		creatorVisibility = JsonAutoDetect.Visibility.NONE
+	  fieldVisibility = JsonAutoDetect.Visibility.ANY,
+	  getterVisibility = JsonAutoDetect.Visibility.NONE,
+	  setterVisibility = JsonAutoDetect.Visibility.NONE,
+	  creatorVisibility = JsonAutoDetect.Visibility.NONE
 )
 public class MemeDto {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,29 +43,28 @@ public class MemeDto {
 	
 	public Meme toModel() {
 		return Meme.builder()
-				.description(this.description)
-				.name(this.name)
-				.isPublic(this.isPublic)
-				.lurkmoreLink(this.lurkmoreLink)
-				.pictureId(this.pictureId)
-				.tags(((String[]) this.tags.toArray()))
-				.build();
-		
+			  .description(this.description)
+			  .name(this.name)
+			  .isPublic(this.isPublic)
+			  .lurkmoreLink(this.lurkmoreLink)
+			  .pictureId(this.pictureId)
+			  .tags(((String[]) this.tags.toArray()))
+			  .build();
 	}
 	
 	public static MemeDto from(Meme meme) {
 		return MemeDto.builder()
-				.id(meme.getId())
-				.createdBy(meme.getCreatedBy().getId())
-				.description(meme.getDescription())
-				.name(meme.getName())
-				.createTime(meme.getCreateTime())
-				.isPublic(meme.isPublic())
-				.lurkmoreLink(meme.getLurkmoreLink())
-				.pictureId(meme.getPictureId())
-				.tags(Arrays.asList(meme.getTags()))
-				.isDeleted(meme.isDeleted())
-				.userNote(meme.getUserNote())
-				.build();
+			  .id(meme.getId())
+			  .createdBy(meme.getCreatedBy().getId())
+			  .description(meme.getDescription())
+			  .name(meme.getName())
+			  .createTime(meme.getCreateTime())
+			  .isPublic(meme.isPublic())
+			  .lurkmoreLink(meme.getLurkmoreLink())
+			  .pictureId(meme.getPictureId())
+			  .tags(Arrays.asList(meme.getTags()))
+			  .isDeleted(meme.isDeleted())
+			  .userNote(meme.getUserNote())
+			  .build();
 	}
 }

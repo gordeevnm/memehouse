@@ -15,10 +15,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @JsonAutoDetect(
-		fieldVisibility = JsonAutoDetect.Visibility.ANY,
-		getterVisibility = JsonAutoDetect.Visibility.NONE,
-		setterVisibility = JsonAutoDetect.Visibility.NONE,
-		creatorVisibility = JsonAutoDetect.Visibility.NONE
+	  fieldVisibility = JsonAutoDetect.Visibility.ANY,
+	  getterVisibility = JsonAutoDetect.Visibility.NONE,
+	  setterVisibility = JsonAutoDetect.Visibility.NONE,
+	  creatorVisibility = JsonAutoDetect.Visibility.NONE
 )
 public class SearchQuery {
 	private String queryString;

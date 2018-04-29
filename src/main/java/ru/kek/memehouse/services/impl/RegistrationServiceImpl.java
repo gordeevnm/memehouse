@@ -28,13 +28,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 	@Override
 	public UserDto registration(RegistrationDto registrationDto, HttpServletRequest request, HttpServletResponse response) {
 		User user = User.builder()
-				.username(registrationDto.getUsername())
-				.password(passwordEncoder.encode(registrationDto.getPassword()))
-				.email(registrationDto.getEmail())
-				.registrationTime(new Timestamp(System.currentTimeMillis()))
-				.roles(new String[]{Roles.ROLE_REGISTERED_USER.getAuthority()})
-				.isDeleted(false)
-				.build();
+			  .username(registrationDto.getUsername())
+			  .password(passwordEncoder.encode(registrationDto.getPassword()))
+			  .email(registrationDto.getEmail())
+			  .registrationTime(new Timestamp(System.currentTimeMillis()))
+			  .roles(new String[]{Roles.ROLE_REGISTERED_USER.getAuthority()})
+			  .isDeleted(false)
+			  .build();
 		
 		usersDao.create(user);
 		

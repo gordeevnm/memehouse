@@ -6,7 +6,7 @@ CREATE TABLE "user"
 	email             VARCHAR(255),
 	roles             VARCHAR(255) [],
 	registration_time TIMESTAMP             NOT NULL,
-	deletion_time     TIMESTAMP             NOT NULL,
+	deletion_time     TIMESTAMP             NULL,
 	is_deleted        BOOLEAN DEFAULT FALSE NOT NULL
 );
 
@@ -23,16 +23,16 @@ CREATE TABLE ban
 
 CREATE TABLE meme
 (
-	id            BIGSERIAL NOT NULL PRIMARY KEY,
-	created_by    BIGINT    NOT NULL REFERENCES "user" (id),
-	description   VARCHAR(1000),
-	name          VARCHAR(255),
-	create_time   TIMESTAMP NOT NULL,
-	is_public     BOOLEAN   NOT NULL,
+	id            BIGSERIAL      NOT NULL PRIMARY KEY,
+	created_by    BIGINT         NOT NULL REFERENCES "user" (id),
+	description   VARCHAR(1000)  NOT NULL,
+	name          VARCHAR(255)   NOT NULL,
+	create_time   TIMESTAMP      NOT NULL,
+	is_public     BOOLEAN        NOT NULL,
 	lurkmore_link VARCHAR(255),
 	picture_id    VARCHAR(255),
-	tags_array    VARCHAR(50) [],
-	is_deleted    BOOLEAN   NOT NULL DEFAULT FALSE
+	tags_array    VARCHAR(50) [] NOT NULL,
+	is_deleted    BOOLEAN        NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE note

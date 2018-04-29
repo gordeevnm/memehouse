@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		classes = {DBInit.class, MemeHouseApplication.class})
+	  classes = {DBInit.class, MemeHouseApplication.class})
 @TestPropertySource("classpath:application-test.properties")
 @AutoConfigureMockMvc
 public class RegistrationTest {
@@ -36,7 +36,7 @@ public class RegistrationTest {
 	private WebApplicationContext webApplicationContext;
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 //	@Before
 //	public void setUp() throws Exception {
 //		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -45,23 +45,23 @@ public class RegistrationTest {
 //	}
 	
 	private static final RegistrationDto testRegDto = RegistrationDto.builder()
-			.email(TestUserData.testEmail)
-			.username(TestUserData.testUsername)
-			.password(TestUserData.testPassword)
-			.build();
+		  .email(TestUserData.testEmail)
+		  .username(TestUserData.testUsername)
+		  .password(TestUserData.testPassword)
+		  .build();
 	
 	@Test
 	public void registrationTest() throws Exception {
 		MvcResult mvcResult = mockMvc
-				.perform(
-						post("/api/registration")
-								.contentType(MediaType.APPLICATION_JSON_UTF8)
-								.content(objectMapper.writeValueAsString(testRegDto))
-				)
-				.andDo(result -> System.out.println(result.getResponse().getContentAsString()))
-				.andExpect(status().isCreated())
-				.andExpect(jsonPath("$").exists())
+			  .perform(
+					 post("/api/registration")
+							.contentType(MediaType.APPLICATION_JSON_UTF8)
+							.content(objectMapper.writeValueAsString(testRegDto))
+			  )
+			  .andDo(result -> System.out.println(result.getResponse().getContentAsString()))
+			  .andExpect(status().isCreated())
+			  .andExpect(jsonPath("$").exists())
 //				.andExpect(jsonPath("$.authToken").isNotEmpty())
-				.andReturn();
+			  .andReturn();
 	}
 }

@@ -8,7 +8,7 @@ import java.io.IOException;
 
 @Component
 public class SimpleCORSFilter implements Filter {
-
+	
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		HttpServletResponse response = (HttpServletResponse) res;
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -16,9 +16,11 @@ public class SimpleCORSFilter implements Filter {
 		response.setHeader("Access-Control-Allow-Headers", WebSecurityConfig.SESSION_HEADER_NAME + ",Content-Type");
 		chain.doFilter(req, res);
 	}
-
-	public void init(FilterConfig filterConfig) {}
-
-	public void destroy() {}
-
+	
+	public void init(FilterConfig filterConfig) {
+	}
+	
+	public void destroy() {
+	}
+	
 }

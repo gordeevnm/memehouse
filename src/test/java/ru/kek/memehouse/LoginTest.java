@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		classes = {DBInit.class, MemeHouseApplication.class})
+	  classes = {DBInit.class, MemeHouseApplication.class})
 @TestPropertySource("classpath:application-test.properties")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @AutoConfigureMockMvc
@@ -41,7 +41,7 @@ public class LoginTest {
 	private WebApplicationContext webApplicationContext;
 	@Autowired
 	private MockMvc mockMvc;
-	
+
 //	@Before
 //	public void setUp() throws Exception {
 //		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -54,17 +54,17 @@ public class LoginTest {
 	@Test
 	public void test1_loginTest() throws Exception {
 		MvcResult mvcResult = mockMvc
-				.perform(
-						post("/api/login")
-								.contentType(MediaType.APPLICATION_JSON_UTF8)
-								.param("username", TestUserData.testUsername)
-								.param("password", TestUserData.testPassword)
-				)
-				.andDo(result -> System.out.println(result.getResponse().getContentAsString()))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$").exists())
-				.andExpect(jsonPath("$.authToken").isNotEmpty())
-				.andReturn();
+			  .perform(
+					 post("/api/login")
+							.contentType(MediaType.APPLICATION_JSON_UTF8)
+							.param("username", TestUserData.testUsername)
+							.param("password", TestUserData.testPassword)
+			  )
+			  .andDo(result -> System.out.println(result.getResponse().getContentAsString()))
+			  .andExpect(status().isOk())
+			  .andExpect(jsonPath("$").exists())
+			  .andExpect(jsonPath("$.authToken").isNotEmpty())
+			  .andReturn();
 		String content = mvcResult.getResponse().getContentAsString();
 		authToken = JsonPath.read(content, "$.authToken");
 		System.out.println(authToken);
@@ -73,11 +73,11 @@ public class LoginTest {
 	@Test
 	public void test2_getAuth() throws Exception {
 		mockMvc.perform(
-				get("/api/authentication")
-						.contentType(MediaType.APPLICATION_JSON_UTF8)
-						.header("X-Auth-Token", authToken))
-				.andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$").exists());
+			  get("/api/authentication")
+					 .contentType(MediaType.APPLICATION_JSON_UTF8)
+					 .header("X-Auth-Token", authToken))
+			  .andDo(print())
+			  .andExpect(status().isOk())
+			  .andExpect(jsonPath("$").exists());
 	}
 }

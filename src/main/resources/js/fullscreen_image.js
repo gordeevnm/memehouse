@@ -1,3 +1,3 @@
 function fullscreenImage(url) {
-console.log(url)
+	console.log(url)
 }

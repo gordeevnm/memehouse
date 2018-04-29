@@ -21,10 +21,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @JsonAutoDetect(
-		fieldVisibility = JsonAutoDetect.Visibility.ANY,
-		getterVisibility = JsonAutoDetect.Visibility.NONE,
-		setterVisibility = JsonAutoDetect.Visibility.NONE,
-		creatorVisibility = JsonAutoDetect.Visibility.NONE
+	  fieldVisibility = JsonAutoDetect.Visibility.ANY,
+	  getterVisibility = JsonAutoDetect.Visibility.NONE,
+	  setterVisibility = JsonAutoDetect.Visibility.NONE,
+	  creatorVisibility = JsonAutoDetect.Visibility.NONE
 )
 public class UserDto {
 	private Long id;
@@ -38,13 +38,13 @@ public class UserDto {
 	
 	public static UserDto from(User user) {
 		return UserDto.builder()
-				.id(user.getId())
-				.roles(Arrays.asList(user.getRoles()))
-				.username(user.getUsername())
-				.email(user.getEmail())
-				.registrationTime(user.getRegistrationTime())
-				.isDeleted(user.isDeleted())
-				.futureBansList(user.getFutureBansList())
-				.build();
+			  .id(user.getId())
+			  .roles(Arrays.asList(user.getRoles()))
+			  .username(user.getUsername())
+			  .email(user.getEmail())
+			  .registrationTime(user.getRegistrationTime())
+			  .isDeleted(user.isDeleted())
+			  .futureBansList(user.getFutureBansList())
+			  .build();
 	}
 }

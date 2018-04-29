@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.kek.memehouse.dto.MemeDto;
+import ru.kek.memehouse.dto.MemeModifyDto;
 import ru.kek.memehouse.services.interfaces.MemeService;
+
+import javax.validation.Valid;
 
 /**
  * gordeevnm@gmail.com
@@ -25,15 +28,7 @@ public class PostMemesController {
 	@RequestMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PreAuthorize("hasRole('REGISTERED_USER')")
-	public MemeDto add(@RequestBody MemeDto meme) {
-		return memeService.add(meme);
-	}
-	
-	@RequestMapping("/meme/{meme-id}/note")
-	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("hasRole('REGISTERED_USER')")
-	public void addNote(@PathVariable("meme-id") int memeId,
-	                    @RequestBody String note) {
-		memeService.addNote(memeId, note);
+	public MemeDto create(@Valid @RequestBody MemeModifyDto memeInfo) {
+		return memeService.create(memeInfo);
 	}
 }

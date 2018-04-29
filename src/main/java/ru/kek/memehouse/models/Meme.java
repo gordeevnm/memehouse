@@ -16,10 +16,10 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "meme")
 @TypeDefs({
-		@TypeDef(
-				name = "string-array",
-				typeClass = StringArrayType.class
-		)
+	  @TypeDef(
+			 name = "string-array",
+			 typeClass = StringArrayType.class
+	  )
 })
 
 @Data

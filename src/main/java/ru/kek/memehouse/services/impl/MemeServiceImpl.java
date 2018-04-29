@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.kek.memehouse.dao.interfaces.MemesDao;
 import ru.kek.memehouse.dto.MemeDto;
+import ru.kek.memehouse.dto.MemeModifyDto;
 import ru.kek.memehouse.dto.SearchQuery;
 import ru.kek.memehouse.exceptions.NotFoundException;
 import ru.kek.memehouse.models.Meme;
@@ -30,11 +31,11 @@ public class MemeServiceImpl implements MemeService {
 	}
 	
 	@Override
-	public MemeDto add(MemeDto memeDto) {
-		Meme meme = memeDto.toModel()
-				.setCreatedBy(AuthUtils.authenticatedUser())
-				.setCreateTime(new Timestamp(System.currentTimeMillis()))
-				.setDeleted(false);
+	public MemeDto create(MemeModifyDto memeInfo) {
+		Meme meme = memeInfo.toModel()
+			  .setCreatedBy(AuthUtils.authenticatedUser())
+			  .setCreateTime(new Timestamp(System.currentTimeMillis()))
+			  .setDeleted(false);
 		
 		memesDao.create(meme);
 		
@@ -44,17 +45,17 @@ public class MemeServiceImpl implements MemeService {
 	@Override
 	public MemeDto get(int memeId) {
 		Meme meme = memesDao.findById(memeId)
-				.filter(m -> m.isPublic() ||
-						Objects.equals(m.getCreatedBy().getId(), AuthUtils.authenticatedUser().getId()) ||
-						AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_MEME_MODERATOR) ||
-						AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_ADMIN))
-				.orElseThrow(() -> new NotFoundException("Мем не найден"));
+			  .filter(m -> m.isPublic() ||
+					 Objects.equals(m.getCreatedBy().getId(), AuthUtils.authenticatedUser().getId()) ||
+					 AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_MEME_MODERATOR) ||
+					 AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_ADMIN))
+			  .orElseThrow(() -> new NotFoundException("Мем не найден"));
 		
 		return MemeDto.from(meme);
 	}
 	
 	@Override
-	public Meme edit(int memeId, Meme meme) {
+	public Meme put(int memeId, MemeModifyDto meme) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
