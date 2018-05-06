@@ -2,7 +2,6 @@ package ru.kek.memehouse.controllers.api.memes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.kek.memehouse.dto.MemeDto;
 import ru.kek.memehouse.dto.MemeModifyDto;
@@ -27,7 +26,7 @@ public class PostMemesController {
 	
 	@RequestMapping("/")
 	@ResponseStatus(HttpStatus.CREATED)
-	@PreAuthorize("hasRole('REGISTERED_USER')")
+//	@PreAuthorize("hasRole('REGISTERED_USER')")
 	public MemeDto create(@Valid @RequestBody MemeModifyDto memeInfo) {
 		return memeService.create(memeInfo);
 	}

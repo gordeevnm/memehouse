@@ -8,13 +8,11 @@ import ru.kek.memehouse.dto.MemeModifyDto;
 import ru.kek.memehouse.dto.SearchQuery;
 import ru.kek.memehouse.exceptions.NotFoundException;
 import ru.kek.memehouse.models.Meme;
-import ru.kek.memehouse.models.Roles;
 import ru.kek.memehouse.services.AuthUtils;
 import ru.kek.memehouse.services.interfaces.MemeService;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * gordeevnm@gmail.com
@@ -45,10 +43,10 @@ public class MemeServiceImpl implements MemeService {
 	@Override
 	public MemeDto get(int memeId) {
 		Meme meme = memesDao.findById(memeId)
-			  .filter(m -> m.isPublic() ||
-					 Objects.equals(m.getCreatedBy().getId(), AuthUtils.authenticatedUser().getId()) ||
-					 AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_MEME_MODERATOR) ||
-					 AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_ADMIN))
+//			  .filter(m -> m.isPublic() ||
+//					 Objects.equals(m.getCreatedBy().getId(), AuthUtils.authenticatedUser().getId()) ||
+//					 AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_MEME_MODERATOR) ||
+//					 AuthUtils.currentAuthentication().getAuthorities().contains(Roles.ROLE_ADMIN))
 			  .orElseThrow(() -> new NotFoundException("Мем не найден"));
 		
 		return MemeDto.from(meme);

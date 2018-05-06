@@ -5,6 +5,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import ru.kek.memehouse.exceptions.UnauthorizedException;
 import ru.kek.memehouse.models.User;
 
+import java.sql.Timestamp;
+import java.util.Collections;
+
 /**
  * gordeevnm@gmail.com
  * 09.12.17
@@ -34,6 +37,17 @@ public class AuthUtils {
 	}
 	
 	public static User authenticatedUser() {
-		return (User) currentAuthentication();
+		return User.builder()
+			  .id(1L)
+			  .roles(new String[]{"ADMIN"})
+			  .username("admin")
+			  .password("test")
+			  .email("gordeevnm@gmail.com")
+			  .registrationTime(new Timestamp(System.currentTimeMillis()))
+			  .isDeleted(false)
+			  .bans(Collections.emptySet())
+			  .bookmarkGroups(Collections.emptySet())
+			  .build();
+		//		return (User) currentAuthentication();
 	}
 }

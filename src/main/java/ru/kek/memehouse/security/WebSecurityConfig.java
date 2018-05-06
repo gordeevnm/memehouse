@@ -1,6 +1,5 @@
 package ru.kek.memehouse.security;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,16 +8,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
-import ru.kek.memehouse.dto.UserDto;
-import ru.kek.memehouse.exceptions.dto.ExceptionDto;
-import ru.kek.memehouse.models.User;
-import ru.kek.memehouse.services.ObjectMapperBean;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * gordeevnm@gmail.com
@@ -44,45 +36,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			  .authorizeRequests()
 			  .anyRequest().permitAll()
 			  
-			  .and()
-			  .formLogin()
-			  .loginProcessingUrl("/api/login")
-			  .permitAll()
-			  .usernameParameter("username")
-			  .passwordParameter("password")
-			  .successHandler((request, response, authentication) -> {
-				  response.setStatus(Response.SC_OK);
-				  response.setHeader("Content-Type", "application/json;charset=UTF-8");
-				  HttpSession session = request.getSession();
-				  User user = (User) authentication.getPrincipal();
-				  UserDto userDto = UserDto.from(user);
-				  userDto.setAuthToken(session.getId());
-				  response.getWriter().print(ObjectMapperBean.get().writeValueAsString(userDto));
-			  })
-			  .failureHandler((request, response, exception) -> {
-				  response.setStatus(Response.SC_FORBIDDEN);
-				  response.setHeader("Content-Type", "application/json;charset=UTF-8");
-				  response.getWriter().print(
-						 ObjectMapperBean.get().writeValueAsString(
-								new ExceptionDto<>(
-									  "AuthenticationException",
-									  "Неверный логин или пароль",
-									  exception.getMessage()
-								)
-						 )
-				  );
-				  response.getWriter().flush();
-				  response.getWriter().close();
-			  })
-			  
-			  .and()
-			  .sessionManagement()
-			  .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-			  
-			  .and()
-			  .logout()
-			  .logoutUrl("/api/logout")
-			  .permitAll()
+//			  .and()
+//			  .formLogin()
+//			  .loginProcessingUrl("/api/login")
+//			  .permitAll()
+//			  .usernameParameter("username")
+//			  .passwordParameter("password")
+//			  .successHandler((request, response, authentication) -> {
+//				  response.setStatus(Response.SC_OK);
+//				  response.setHeader("Content-Type", "application/json;charset=UTF-8");
+//				  HttpSession session = request.getSession();
+//				  User user = (User) authentication.getPrincipal();
+//				  UserDto userDto = UserDto.from(user);
+//				  userDto.setAuthToken(session.getId());
+//				  response.getWriter().print(ObjectMapperBean.get().writeValueAsString(userDto));
+//			  })
+//			  .failureHandler((request, response, exception) -> {
+//				  response.setStatus(Response.SC_FORBIDDEN);
+//				  response.setHeader("Content-Type", "application/json;charset=UTF-8");
+//				  response.getWriter().print(
+//						 ObjectMapperBean.get().writeValueAsString(
+//								new ExceptionDto<>(
+//									  "AuthenticationException",
+//									  "Неверный логин или пароль",
+//									  exception.getMessage()
+//								)
+//						 )
+//				  );
+//				  response.getWriter().flush();
+//				  response.getWriter().close();
+//			  })
+//
+//			  .and()
+//			  .sessionManagement()
+//			  .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+//
+//			  .and()
+//			  .logout()
+//			  .logoutUrl("/api/logout")
+//			  .permitAll()
 			  
 			  .and()
 			  .csrf()
