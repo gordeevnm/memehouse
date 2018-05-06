@@ -92,7 +92,7 @@ VALUES
 	 'Иди сюда, мерзавец, негодяй, гад, иди сюда, ты, говно, ЖОПА!',
 	 'Ублюдок, мать твою', 1, TRUE);
 
-INSERT INTO tag (id, tag)
+INSERT INTO tag (id, name)
 VALUES (1, 'Pepe'),
 	(2, 'Пепе'),
 	(3, 'тыква'),

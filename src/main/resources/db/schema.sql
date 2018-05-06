@@ -47,7 +47,7 @@ CREATE TABLE tag
 (
 	tag         VARCHAR(50) NOT NULL PRIMARY KEY,
 	memes_count INTEGER     NOT NULL DEFAULT 0,
-	merged_with VARCHAR(50) REFERENCES tag (tag),
+	merged_with VARCHAR(50) REFERENCES tag (name),
 	merge_time  TIMESTAMP,
 	merged_by   BIGINT REFERENCES "user" (id)
 );
@@ -55,7 +55,7 @@ CREATE TABLE tag
 CREATE TABLE meme_tag
 (
 	meme_id BIGINT      NOT NULL REFERENCES meme (id),
-	tag     VARCHAR(50) NOT NULL REFERENCES tag (tag)
+	tag     VARCHAR(50) NOT NULL REFERENCES tag (name)
 );
 
 CREATE TABLE bookmark_group
