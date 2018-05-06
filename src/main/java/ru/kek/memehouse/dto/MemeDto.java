@@ -55,7 +55,7 @@ public class MemeDto {
 	public static MemeDto from(Meme meme) {
 		return MemeDto.builder()
 			  .id(meme.getId())
-			  .createdBy(meme.getCreatedBy().getId())
+			  .createdBy(meme.getCreatedById())
 			  .description(meme.getDescription())
 			  .name(meme.getName())
 			  .createTime(meme.getCreateTime())

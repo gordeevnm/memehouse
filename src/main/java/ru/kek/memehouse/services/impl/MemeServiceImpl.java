@@ -31,7 +31,8 @@ public class MemeServiceImpl implements MemeService {
 	@Override
 	public MemeDto create(MemeModifyDto memeInfo) {
 		Meme meme = memeInfo.toModel()
-			  .setCreatedBy(AuthUtils.authenticatedUser())
+			  .setCreatedByUser(AuthUtils.authenticatedUser())
+			  .setCreatedById(AuthUtils.authenticatedUser().getId())
 			  .setCreateTime(new Timestamp(System.currentTimeMillis()))
 			  .setDeleted(false);
 		

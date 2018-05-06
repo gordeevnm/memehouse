@@ -270,16 +270,16 @@ public class TestData {
 		tags.get(22).setMergedWith(tags.get(22)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
 		tags.get(28).setMergedWith(tags.get(27)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
 		
-		memes.get(0).setCreatedBy(users.get(2));
-		memes.get(1).setCreatedBy(users.get(3));
-		memes.get(2).setCreatedBy(users.get(5));
-		memes.get(3).setCreatedBy(users.get(2));
-		memes.get(4).setCreatedBy(users.get(2));
-		memes.get(5).setCreatedBy(users.get(6));
-		memes.get(6).setCreatedBy(users.get(5));
-		memes.get(7).setCreatedBy(users.get(3));
-		memes.get(8).setCreatedBy(users.get(2));
-		memes.get(9).setCreatedBy(users.get(6));
+		memes.get(0).setCreatedByUser(users.get(2));
+		memes.get(1).setCreatedByUser(users.get(3));
+		memes.get(2).setCreatedByUser(users.get(5));
+		memes.get(3).setCreatedByUser(users.get(2));
+		memes.get(4).setCreatedByUser(users.get(2));
+		memes.get(5).setCreatedByUser(users.get(6));
+		memes.get(6).setCreatedByUser(users.get(5));
+		memes.get(7).setCreatedByUser(users.get(3));
+		memes.get(8).setCreatedByUser(users.get(2));
+		memes.get(9).setCreatedByUser(users.get(6));
 		
 		bookmarkGroups.get(0).setOwner(users.get(0));
 		bookmarkGroups.get(1).setOwner(users.get(0));

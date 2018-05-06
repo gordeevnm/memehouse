@@ -18,15 +18,15 @@ IS $$
 $$;
 
 create or replace function insert_meme(
-	created_by    bigint,
-	description   varchar(1000),
-	name          varchar(255),
-	create_time   timestamp,
-	is_public     boolean,
-	tags_array    varchar(50) [],
-	lurkmore_link varchar(255) default null,
-	picture_id    varchar(255) default null,
-	is_deleted    boolean default false
+	created_by    meme.created_by%TYPE,
+	description   meme.description%TYPE,
+	name          meme.name%TYPE,
+	create_time   meme.create_time%TYPE,
+	is_public     meme.is_public%TYPE,
+	tags_array    meme.tags_array%TYPE,
+	lurkmore_link meme.lurkmore_link%TYPE default null,
+	picture_id    meme.picture_id%TYPE default null,
+	is_deleted    meme.is_deleted%TYPE default false
 )
 	returns meme as $$
 declare
@@ -56,7 +56,7 @@ begin
 		 insert_meme.picture_id,
 		 prepared_tags,
 		 insert_meme.is_deleted)
-	returning meme
+	returning *
 		into saved_meme;
 	
 	insert into meme_tag (meme_id, tag_name)
@@ -157,23 +157,23 @@ begin
 			       from meme_tag
 			       where tag_name = merge_tag.derivative_tag)
 		returning meme.id;
-		
+	
 	else
 		
 		if derivative_tag_row.merged_with notnull
 		then
--- 			todo: implement
+			-- 			todo: implement
 			raise exception 'not implemented'
 			using hint = 'you cant merge already merged tag';
 		end if;
 		
 		if general_tag_row.merged_with notnull
 		then
--- 			todo: implement
+			-- 			todo: implement
 			raise exception 'not implemented'
 			using hint = 'you cant merge tag with already merged tag';
 		end if;
-		
+	
 	end if;
 end;
 $$

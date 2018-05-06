@@ -55,7 +55,7 @@ public class Meme {
 	@Transient
 	private String userNote;
 	@Transient
-	private User createdBy;
+	private User createdByUser;
 	
 	public static RowMapper<Meme> DEF_ROW_MAPPER =
 		  (rs, rowNum) ->
@@ -68,7 +68,7 @@ public class Meme {
 						.isPublic(rs.getBoolean("is_public"))
 						.lurkmoreLink(rs.getString("lurkmore_link"))
 						.pictureId(rs.getString("picture_id"))
-						.tags(((String[]) rs.getArray("tags").getArray()))
+						.tags(((String[]) rs.getArray("tags_array").getArray()))
 						.isDeleted(rs.getBoolean("is_deleted"))
 						.build();
 }
