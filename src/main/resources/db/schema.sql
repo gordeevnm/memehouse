@@ -23,16 +23,17 @@ CREATE TABLE ban
 
 CREATE TABLE meme
 (
-	id            BIGSERIAL      NOT NULL PRIMARY KEY,
-	created_by    BIGINT         NOT NULL REFERENCES "user" (id),
-	description   VARCHAR(1000)  NOT NULL,
-	name          VARCHAR(255)   NOT NULL,
-	create_time   TIMESTAMP      NOT NULL,
-	is_public     BOOLEAN        NOT NULL,
-	lurkmore_link VARCHAR(255),
-	picture_id    VARCHAR(255),
-	tags_array    VARCHAR(50) [] NOT NULL,
-	is_deleted    BOOLEAN        NOT NULL DEFAULT FALSE
+	id              BIGSERIAL      NOT NULL PRIMARY KEY,
+	created_by      BIGINT         NOT NULL REFERENCES "user" (id),
+	description     VARCHAR(1000)  NOT NULL,
+	name            VARCHAR(255)   NOT NULL,
+	create_time     TIMESTAMP      NOT NULL,
+	is_public       BOOLEAN        NOT NULL,
+	lurkmore_link   VARCHAR(255),
+	picture_id      VARCHAR(255),
+	tags_array      VARCHAR(50) [] NOT NULL,
+	is_deleted      BOOLEAN        NOT NULL DEFAULT FALSE,
+	last_updated_by BIGINT         NULL REFERENCES "user" (id)
 );
 
 CREATE TABLE note

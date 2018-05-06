@@ -25,8 +25,7 @@ create or replace function insert_meme(
 	is_public     meme.is_public%TYPE,
 	tags_array    meme.tags_array%TYPE,
 	lurkmore_link meme.lurkmore_link%TYPE default null,
-	picture_id    meme.picture_id%TYPE default null,
-	is_deleted    meme.is_deleted%TYPE default false
+	picture_id    meme.picture_id%TYPE default null
 )
 	returns meme as $$
 declare
@@ -44,8 +43,7 @@ begin
 		is_public,
 		lurkmore_link,
 		picture_id,
-		tags_array,
-		is_deleted)
+		tags_array)
 	values
 		(insert_meme.created_by,
 		 insert_meme.description,
@@ -54,8 +52,7 @@ begin
 		 insert_meme.is_public,
 		 insert_meme.lurkmore_link,
 		 insert_meme.picture_id,
-		 prepared_tags,
-		 insert_meme.is_deleted)
+		 prepared_tags)
 	returning *
 		into saved_meme;
 	
@@ -175,6 +172,51 @@ begin
 		end if;
 	
 	end if;
+end;
+$$
+language plpgsql;
+
+create or replace function update_meme(
+	id              meme.id%TYPE,
+	last_updated_by meme.last_updated_by%TYPE,
+	description     meme.description%TYPE,
+	name            meme.name%TYPE,
+	is_public       meme.is_public%TYPE,
+	tags_array      meme.tags_array%TYPE,
+	lurkmore_link   meme.lurkmore_link%TYPE default null,
+	picture_id      meme.picture_id%TYPE default null,
+)
+	returns meme as $$
+declare
+	prepared_tags varchar(50) [];
+	saved_meme    meme;
+begin
+	select prepare_tags(update_meme.tags_array)
+	into prepared_tags;
+	
+	update meme
+	set
+		description     = update_meme.description,
+		name            = update_meme.name,
+		last_updated_by = update_meme.last_updated_by,
+		is_public       = update_meme.is_public,
+		lurkmore_link   = update_meme.lurkmore_link,
+		picture_id      = update_meme.picture_id,
+		tags_array      = prepared_tags
+	where
+		id = update_meme.id
+	returning *
+		into saved_meme;
+	
+	delete from meme_tag m2
+	where meme_id = update_meme.id;
+	
+	insert into meme_tag (meme_id, tag_name)
+		select
+			saved_meme.id,
+			unnest(prepared_tags);
+	
+	return saved_meme;
 end;
 $$
 language plpgsql;
