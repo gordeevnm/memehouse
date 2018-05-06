@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.springframework.jdbc.core.RowMapper;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -31,9 +32,8 @@ public class Meme {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "created_by", nullable = false)
-	private User createdBy;
+	@Column(name = "created_by", nullable = false)
+	private Long createdById;
 	@Column(name = "create_time", nullable = false)
 	private Timestamp createTime;
 	@Column(name = "description")
@@ -51,7 +51,24 @@ public class Meme {
 	private String[] tags;
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
-	// TODO: 22.04.18 переделать
+	
 	@Transient
 	private String userNote;
+	@Transient
+	private User createdBy;
+	
+	public static RowMapper<Meme> DEF_ROW_MAPPER =
+		  (rs, rowNum) ->
+				 Meme.builder()
+						.id(rs.getLong("id"))
+						.createdById(rs.getLong("created_by"))
+						.createTime(rs.getTimestamp("create_time"))
+						.description(rs.getString("description"))
+						.name(rs.getString("name"))
+						.isPublic(rs.getBoolean("is_public"))
+						.lurkmoreLink(rs.getString("lurkmore_link"))
+						.pictureId(rs.getString("picture_id"))
+						.tags(((String[]) rs.getArray("tags").getArray()))
+						.isDeleted(rs.getBoolean("is_deleted"))
+						.build();
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import ru.kek.memehouse.models.Meme;
 
@@ -15,6 +16,7 @@ import ru.kek.memehouse.models.Meme;
 @Accessors(chain = true)
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonAutoDetect(
 	  fieldVisibility = JsonAutoDetect.Visibility.ANY,
 	  getterVisibility = JsonAutoDetect.Visibility.NONE,
