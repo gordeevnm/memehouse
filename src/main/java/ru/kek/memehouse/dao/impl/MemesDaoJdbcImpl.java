@@ -22,18 +22,6 @@ public class MemesDaoJdbcImpl implements MemesDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedJdbcTemplate;
 	
-	private Map<String, Object> getParams(Meme meme) {
-		Map<String, Object> params = new HashMap<>();
-		params.put("created_by", meme.getCreatedById());
-		params.put("description", meme.getDescription());
-		params.put("name", meme.getName());
-		params.put("create_time", meme.getCreateTime());
-		params.put("is_public", meme.isPublic());
-		params.put("tags_array", createSqlArray(meme.getTags()));
-		
-		return params;
-	}
-	
 	@SneakyThrows
 	private java.sql.Array createSqlArray(String[] arr) {
 		return namedJdbcTemplate
@@ -46,14 +34,45 @@ public class MemesDaoJdbcImpl implements MemesDao {
 	@Override
 	public void create(Meme meme) {
 		final String sql =
-			  "select * from insert_meme(created_by:= :created_by::bigint," +
-					 "                     description:= :description::varchar," +
-					 "                     name:= :name::varchar," +
-					 "                     create_time:= :create_time::timestamp," +
-					 "                     is_public:= :is_public::boolean," +
-					 "                     tags_array:= :tags_array::varchar[])";
+			  "select * from insert_meme(created_by := :created_by::bigint," +
+					 "                     description := :description::varchar," +
+					 "                     name := :name::varchar," +
+					 "                     create_time := :create_time::timestamp," +
+					 "                     is_public := :is_public::boolean," +
+					 "                     tags_array := :tags_array::varchar[])";
 		
-		final Meme savedMeme = namedJdbcTemplate.queryForObject(sql, getParams(meme), Meme.DEF_ROW_MAPPER);
+		Map<String, Object> params = new HashMap<>();
+		params.put("created_by", meme.getCreatedById());
+		params.put("description", meme.getDescription());
+		params.put("name", meme.getName());
+		params.put("create_time", meme.getCreateTime());
+		params.put("is_public", meme.isPublic());
+		params.put("tags_array", createSqlArray(meme.getTags()));
+		
+		final Meme savedMeme = namedJdbcTemplate.queryForObject(sql, params, Meme.DEF_ROW_MAPPER);
+		meme.setId(savedMeme.getId());
+		meme.setTags(savedMeme.getTags());
+	}
+	
+	@Override
+	public void update(Meme meme, Long updatedById) {
+		final String sql =
+			  "select * from update_meme(meme_id := :meme_id::bigint," +
+				    "                     last_updated_by := :updated_by::bigint," +
+				    "                     description := :description::varchar," +
+				    "                     name := :name::varchar," +
+					 "                     is_public := :is_public::boolean," +
+					 "                     tags_array := :tags_array::varchar[])";
+		
+		Map<String, Object> params = new HashMap<>();
+		params.put("meme_id", meme.getId());
+		params.put("updated_by", updatedById);
+		params.put("name", meme.getName());
+		params.put("description", meme.getDescription());
+		params.put("is_public", meme.isPublic());
+		params.put("tags_array", createSqlArray(meme.getTags()));
+		
+		final Meme savedMeme = namedJdbcTemplate.queryForObject(sql, params, Meme.DEF_ROW_MAPPER);
 		meme.setId(savedMeme.getId());
 		meme.setTags(savedMeme.getTags());
 	}

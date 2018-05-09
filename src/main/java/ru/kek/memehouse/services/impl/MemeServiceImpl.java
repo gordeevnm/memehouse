@@ -54,8 +54,18 @@ public class MemeServiceImpl implements MemeService {
 	}
 	
 	@Override
-	public Meme put(int memeId, MemeModifyDto meme) {
-		throw new UnsupportedOperationException("Service not implemented");
+	public MemeDto put(int memeId, MemeModifyDto memeInfo) {
+		Meme meme = memesDao.findById(memeId)
+			  .orElseThrow(() -> new NotFoundException("meme " + memeId + " not found"));
+		
+		meme.setTags(memeInfo.getTags())
+			  .setName(memeInfo.getName())
+			  .setDescription(memeInfo.getDescription())
+			  .setPublic(memeInfo.isPublic());
+		
+		memesDao.update(meme, AuthUtils.authenticatedUser().getId());
+		
+		return MemeDto.from(meme);
 	}
 	
 	@Override

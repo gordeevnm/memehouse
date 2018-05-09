@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface MemesDao {
 	void create(Meme meme);
 	
+	void update(Meme meme, Long updatedBy);
+	
 	Optional<Meme> findById(int memeId);
 }

@@ -2,10 +2,9 @@ package ru.kek.memehouse.controllers.api.memes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ru.kek.memehouse.dto.MemeDto;
 import ru.kek.memehouse.dto.MemeModifyDto;
-import ru.kek.memehouse.models.Meme;
 import ru.kek.memehouse.services.interfaces.MemeService;
 
 /**
@@ -25,9 +24,9 @@ public class PutMemesController {
 	
 	@RequestMapping("/{meme-id}")
 	@ResponseStatus(HttpStatus.OK)
-	@PreAuthorize("hasAnyRole('REGISTERED_USER')")
-	public Meme put(@PathVariable("meme-id") int memeId,
-	                @RequestBody MemeModifyDto memeInfo) {
+//	@PreAuthorize("hasAnyRole('REGISTERED_USER')")
+	public MemeDto put(@PathVariable("meme-id") int memeId,
+	                   @RequestBody MemeModifyDto memeInfo) {
 		return memeService.put(memeId, memeInfo);
 	}
 }

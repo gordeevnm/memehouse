@@ -18,7 +18,7 @@ public interface MemeService {
 	
 	MemeDto get(int memeId);
 	
-	Meme put(int memeId, MemeModifyDto meme);
+	MemeDto put(int memeId, MemeModifyDto meme);
 	
 	void delete(int memeId);
 	

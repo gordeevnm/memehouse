@@ -92,13 +92,44 @@ create or replace function merge_tag(
 	derivative_tag varchar(50),
 	general_tag    varchar(50),
 	merged_by      bigint,
-	merge_time     timestamp
+	merge_time     timestamp,
+	force_remerge  boolean default false
 )
 	returns setof bigint as $$
 declare
 	derivative_tag_row tag;
 	general_tag_row    tag;
+	remerged_tags      varchar [];
 begin
+	
+	if exists(select name
+	          from tag
+	          where name = merge_tag.general_tag)
+	then
+		select *
+		into general_tag_row
+		from tag
+		where name = merge_tag.general_tag;
+	else
+		insert into tag (name)
+		values (merge_tag.general_tag)
+		on conflict (name)
+			do update set name = EXCLUDED.name
+		returning *
+			into general_tag_row;
+	end if;
+	
+	-- Не мержить если главный тег уже смержен - для этого надо
+	-- вручную указать свободый тег, с которым надо связать
+	if general_tag_row.merged_with notnull
+	then
+		
+		raise exception 'Already merged tag.'
+		using hint = 'General tag(' || merge_tag.general_tag || ') is already merged with tag ' ||
+		             general_tag_row.merged_with || '.';
+	
+	end if;
+	
 	if exists(select name
 	          from tag
 	          where name = merge_tag.derivative_tag)
@@ -112,63 +143,65 @@ begin
 		values (merge_tag.derivative_tag)
 		on conflict (name)
 			do update set name = EXCLUDED.name
-		returning tag.*
+		returning *
 			into derivative_tag_row;
 	end if;
 	
-	if exists(select name
-	          from tag
-	          where name = merge_tag.general_tag)
-	then
-		select tag.*
-		into general_tag_row
-		from tag
-		where name = merge_tag.general_tag;
-	else
-		insert into tag (name)
-		values (merge_tag.general_tag)
-		on conflict (name)
-			do update set name = EXCLUDED.name
-		returning tag.*
-			into general_tag_row;
-	end if;
 	
-	if derivative_tag_row.merged_with isnull and general_tag_row.merged_with isnull
+	if derivative_tag_row.merged_with isnull
 	then
-		
-		update tag
-		set
-			merged_with = general_tag,
-			merged_by   = merge_tag.merged_by,
-			merge_time  = merge_tag.merge_time
-		where
-			name = merge_tag.derivative_tag;
-		
-		
-		return query
-		update meme
-		set
-			tags_array = prepare_tags(tags_array)
-		where
-			id in (select distinct meme_id
-			       from meme_tag
-			       where tag_name = merge_tag.derivative_tag)
-		returning meme.id;
-	
-	else
-		
-		if derivative_tag_row.merged_with notnull
+		if general_tag_row.merged_with isnull
 		then
-			-- 			todo: implement
-			raise exception 'not implemented'
-			using hint = 'you cant merge already merged tag';
+			
+			-- Обновляем ссылки на главные теги
+			-- у объединяемого тега и всех объединенных с ним
+			update tag
+			set
+				merged_with = merge_tag.general_tag,
+				merged_by   = merge_tag.merged_by,
+				merge_time  = merge_tag.merge_time
+			where
+				name = merge_tag.derivative_tag or
+				merged_with = merge_tag.derivative_tag
+			returning name
+				into remerged_tags;
+			
+			-- Обновляем списки тегов у всех затронутых мемов
+			return query
+			update meme
+			set
+				tags_array = prepare_tags(tags_array)
+			where
+				id in (select distinct meme_id
+				       from meme_tag
+				       where tag_name = any (remerged_tags))
+			returning meme.id;
+		
 		end if;
+	
+	else
 		
-		if general_tag_row.merged_with notnull
+		if merge_tag.force_remerge
 		then
-			-- 			todo: implement
-			raise exception 'not implemented'
-			using hint = 'you cant merge tag with already merged tag';
+			
+			-- Обновляем ссылку на главный тег у объединяемого тега
+			update tag
+			set
+				merged_with = merge_tag.general_tag,
+				merged_by   = merge_tag.merged_by,
+				merge_time  = merge_tag.merge_time
+			where
+				name = merge_tag.derivative_tag;
+		
+			return;
+			
+		else
+			
+			raise exception 'Already merged tag.'
+			using hint = 'Derivative tag(' || merge_tag.derivative_tag || ') already merged with tag ' ||
+			             derivative_tag_row.merged_with || '. ' ||
+			             'Use parameter force_remerge to remerge this tag with another one.';
+		
 		end if;
 	
 	end if;
@@ -177,14 +210,14 @@ $$
 language plpgsql;
 
 create or replace function update_meme(
-	id              meme.id%TYPE,
+	meme_id         meme.id%TYPE,
 	last_updated_by meme.last_updated_by%TYPE,
 	description     meme.description%TYPE,
 	name            meme.name%TYPE,
 	is_public       meme.is_public%TYPE,
 	tags_array      meme.tags_array%TYPE,
 	lurkmore_link   meme.lurkmore_link%TYPE default null,
-	picture_id      meme.picture_id%TYPE default null,
+	picture_id      meme.picture_id%TYPE default null
 )
 	returns meme as $$
 declare
@@ -193,6 +226,8 @@ declare
 begin
 	select prepare_tags(update_meme.tags_array)
 	into prepared_tags;
+	
+	-- 	todo логировать все обновления в отдельной таблице триггерами
 	
 	update meme
 	set
@@ -204,12 +239,12 @@ begin
 		picture_id      = update_meme.picture_id,
 		tags_array      = prepared_tags
 	where
-		id = update_meme.id
+		id = update_meme.meme_id
 	returning *
 		into saved_meme;
 	
-	delete from meme_tag m2
-	where meme_id = update_meme.id;
+	delete from meme_tag
+	where meme_tag.meme_id = update_meme.meme_id;
 	
 	insert into meme_tag (meme_id, tag_name)
 		select
