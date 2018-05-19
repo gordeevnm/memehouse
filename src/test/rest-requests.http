@@ -1,0 +1,85 @@
+POST http://localhost:8090/api/meme/
+Content-Type: application/json
+
+{ "name" : "meme name", "description" : "description for test meme", "isPublic" : "true", "tags" : [ "anothertag", "asd" ] }
+
+###
+
+GET http://localhost:8090/api/meme/27
+Content-Type: application/json
+
+###
+
+PUT http://localhost:8090/api/meme/27
+Content-Type: application/json
+
+{ "name" : "test meme name", "description" : "test descr", "isPublic" : "true", "tags" : [ "test", "anothertag", "asdasfsdwasd" ] }
+
+###
+
+PUT http://localhost:9200/memes_index
+Content-Type: application/json
+
+{
+  "settings": {
+    "analysis": {
+      "filter": {
+		  "ngram_filter": {
+		     "type": "nGram",
+		     "min_gram": 3,
+		     "max_gram": 9
+		  },
+        "ru_stop": {
+          "type": "stop",
+          "stopwords": "_russian_"
+        },
+        "ru_stemmer": {
+          "type": "stemmer",
+          "language": "russian"
+        }
+      },
+        "tokenizer": {
+           "ngram_tokenizer": {
+              "type": "nGram",
+              "min_gram": 3,
+              "max_gram": 9
+           }
+        },
+      "analyzer": {
+        "default": {
+          "char_filter": [
+            "html_strip"
+          ],
+          "tokenizer": "ngram_tokenizer",
+          "filter": [
+            "lowercase",
+            "stop",
+            "ru_stop",
+            "ru_stemmer",
+            "ngram_filter"
+          ]
+        }
+      }
+    }
+  }
+}
+
+
+###
+
+DELETE http://localhost:9200/memes_index
+
+###
+GET http://localhost:9200/memes_index
+Content-Type: application/json
+
+
+###
+POST http://localhost:9200/memes_index/_analyze
+Content-Type: application/json
+
+{
+  "text":     "descript"
+}
+
+###
