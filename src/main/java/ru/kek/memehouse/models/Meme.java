@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ import java.sql.Timestamp;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(indexName = "memes_index", type = "meme", createIndex = false, useServerConfiguration = true)
 public class Meme {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,9 +55,9 @@ public class Meme {
 	private boolean isDeleted;
 	
 	@Transient
-	private String userNote;
+	private transient String userNote;
 	@Transient
-	private User createdByUser;
+	private transient User createdByUser;
 	
 	public static RowMapper<Meme> DEF_ROW_MAPPER =
 		  (rs, rowNum) ->

@@ -1,0 +1,7 @@
+path:
+  data: /data/data
+  logs: /data/logs
+
+node.name: "node1"
+cluster.name: "memehouse-elastic-cluster"
+network.host: 0.0.0.0

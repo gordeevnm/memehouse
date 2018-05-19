@@ -66,15 +66,16 @@ end;
 $$
 language plpgsql;
 
-comment on function insert_meme(created_by    bigint,
-                                description   varchar(1000),
-                                name          varchar(255),
-                                create_time   timestamp,
-                                is_public     boolean,
-                                tags_array    varchar(50) [],
-                                lurkmore_link varchar(255),
-                                picture_id    varchar(255),
-                                is_deleted    boolean)
+comment on function insert_meme(
+	created_by    meme.created_by%TYPE,
+	description   meme.description%TYPE,
+	name          meme.name%TYPE,
+	create_time   meme.create_time%TYPE,
+	is_public     meme.is_public%TYPE,
+	tags_array    meme.tags_array%TYPE,
+	lurkmore_link meme.lurkmore_link%TYPE,
+	picture_id    meme.picture_id%TYPE
+)
 IS $$
 Записыват мем в базу, вызывает функцию insert_tags() для полученного массива тегов.
 Будет возвращена созданная запись, массив тегов будет отредактирован в соответствии с объединенными тегами.
@@ -192,9 +193,9 @@ begin
 				merge_time  = merge_tag.merge_time
 			where
 				name = merge_tag.derivative_tag;
-		
-			return;
 			
+			return;
+		
 		else
 			
 			raise exception 'Already merged tag.'

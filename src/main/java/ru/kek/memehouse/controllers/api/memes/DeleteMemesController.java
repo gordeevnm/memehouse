@@ -11,7 +11,7 @@ import ru.kek.memehouse.services.interfaces.MemeService;
  * 20.11.17
  */
 @RestController
-@RequestMapping(value = "/api/meme", method = RequestMethod.DELETE)
+@RequestMapping(value = "/api/memes", method = RequestMethod.DELETE)
 public class DeleteMemesController {
 	
 	private final MemeService memeService;
@@ -24,7 +24,7 @@ public class DeleteMemesController {
 	@RequestMapping("/{meme-id}")
 	@ResponseStatus(HttpStatus.OK)
 	@PreAuthorize("hasRole('REGISTERED_USER')")
-	public void delete(@PathVariable("meme-id") int memeId) {
+	public void delete(@PathVariable("meme-id") Long memeId) {
 		memeService.delete(memeId);
 	}
 }

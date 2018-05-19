@@ -1,0 +1,133 @@
+POST http://localhost:8090/api/memes/batch
+Content-Type: application/json
+
+[
+	{
+		"name" : "Тут",
+		"description" : "Мальчик показывает где находится местоположение чего-либо.",
+		"isPublic" : "true",
+		"tags" : ["тут", "туть", "мальчик", "карта", "в сердце"],
+      "pictureId": "https://pp.userapi.com/c844720/v844720216/5728b/Br3723SyfBk.jpg"
+	},
+	{
+		"name" : "Вжух",
+		"description" : "Кот-волшебник исполняет любые желания",
+		"isPublic" : "true",
+		"tags" : ["вжух", "кот-волшебник", "волшебная палочка", "вжух-петух"],
+      "pictureId": "https://pp.userapi.com/c844720/v844720216/57294/SaHygcGXprk.jpg"
+	},
+	{
+		"name" : "Смеющийся Том Круз",
+		"description" : "Коллаж из фотографий Тома Круза, где он смеется",
+		"isPublic" : "true",
+		"tags" : ["том круз", "смех", "ахахах"],
+      "pictureId": "https://i.imgur.com/9ENzcoY.jpg"
+	},
+	{
+		"name" : "Боромир",
+		"description" : "Момент из фильма \"властели колец: братство кольца\"",
+		"isPublic" : "true",
+		"tags" : ["нельзя", "нельзя просто так", "нельзя просто так взять и"],
+      "pictureId": "https://pp.userapi.com/c844720/v844720440/58e62/fBo55yer7Dg.jpg"
+	},
+	{
+		"name" : "Так блэт",
+		"description" : "Птичка киви",
+		"isPublic" : "true",
+		"tags" : ["так блэт"],
+      "pictureId": "https://pp.userapi.com/c844720/v844720440/58e6f/npj36jQeUhg.jpg"
+	},
+	{
+		"name" : "Сверхразум",
+		"description" : "",
+		"isPublic" : "true",
+		"tags" : ["сверхразум", "шаблон"],
+		"pictureId": "https://www.meme-arsenal.com/memes/26bb280ab34c4f31a4f2462e0b53c17a.jpg"
+	},
+	{
+		"name" : "Осел!",
+		"description" : "Фиона, Шрек, и др. орут друг на друга",
+		"isPublic" : "true",
+		"tags" : ["осел", "шрек", "фиона", "шаблон"],
+      "pictureId": "https://www.meme-arsenal.com/memes/e54640db472d5efa8309abe82a502fc6.jpg"
+	},
+	{
+		"name" : "Ни ху я",
+		"description" : "Чувак с тыквой на голове танцует.",
+		"isPublic" : "true",
+		"tags" : ["тыква","танец"],
+      "pictureId": "https://www.meme-arsenal.com/memes/c2944d7147149e25e3d829ab476befda.jpg"
+	},
+	{
+		"name" : "Pepe Frog",
+		"description" : "Грустная зеленая лягушка",
+		"isPublic" : "true",
+		"tags" : ["рисунок","эмоции","лягушка","Пепе"],
+      "pictureId": "https://cdn.cnn.com/cnnnext/dam/assets/160927210830-tk-ah0927-exlarge-169.jpg"
+	},
+	{
+		"name" : "Harold hide the pain",
+		"description" : "Старик, скрывающий боль за фальшивой улыбкой",
+		"isPublic" : "true",
+		"tags" : ["фото","боль","эмоции","Гарольд"],
+      "pictureId": "https://memepedia.ru/wp-content/uploads/2016/03/hide-the-pain-harold.jpg"
+	},
+	{
+		"name" : "Негр умник",
+		"description" : "Негр-актер тычет пальцем себе в висок",
+		"isPublic" : "true",
+		"tags" : ["негр","актер","фото","интеллект"],
+      "pictureId": "https://coubsecure-s.akamaihd.net/get/b79/p/coub/simple/cw_timeline_pic/c69d8cb3ee4/54cc5acd1f8b004cf6c0a/big_1490385602_image.jpg"
+	},
+	{
+		"name" : "Темный властелин",
+		"description" : "Кадр из порнухи. Негр на желтом фоне в фуражке",
+		"isPublic" : "true",
+		"tags" : ["негр","фото","властелин"],
+      "pictureId": "https://i.ytimg.com/vi/W1eSlLw4IJs/hqdefault.jpg"
+	},
+	{
+		"name" : "Фрейд",
+		"description" : "Просто черно-белая фотография дедушки Фрейда",
+		"isPublic" : "true",
+		"tags" : ["фото","фрейд"],
+      "pictureId": "http://russian7.ru/wp-content/uploads/2015/07/supercoolpics_01_06052015144140.jpg"
+	},
+	{
+		"name" : "Magic",
+		"description" : "Кудрявый Шайа ЛаБаф показывает магию на каком-то телешоу",
+		"isPublic" : "true",
+		"tags" : ["актер","фото","мотивация"],
+      "pictureId": "http://www.reactiongifs.com/r/mgc.gif"
+	},
+	{
+		"name" : "Ебушки-воробушки",
+		"description" : "Несколько нарисованных воробьев с огроменными хуищами",
+		"isPublic" : "true",
+		"tags" : ["воробьи","рисунок","член"],
+      "pictureId": "https://cs5.pikabu.ru/images/big_size_comm/2015-10_2/1444403171156613638.jpg"
+	},
+	{
+		"name" : "Zip File",
+		"description" : "Иконка zip-файла из винды кидает зигу и говорит \"Zip File \\o\"; Иконки rar-архива говорят \"Винрары воевали! Нарцисты ебаные\"; Нарцисы говорят \"сук пздц.\"",
+		"isPublic" : "true",
+		"tags" : ["бред","рисунок","комикс","zip"],
+      "pictureId": "https://cs8.pikabu.ru/images/big_size_comm/2017-08_6/1503760968124220552.jpg"
+	},
+	{
+		"name" : "Ублюдок, мать твою",
+		"description" : "Ублюдок, мать твою, а ну иди сюда, говно собачье! Что, решил ко мне лезть?! Ты, засранец вонючий, мать твою, а? Ну, иди сюда, попробуй меня трахнуть, я тебя сам трахну, ублюдок, онанист чертов, будь ты проклят! Иди, идиот, трахать тебя и всю твою семью, говно собачье, жлоб вонючий, дерьмо, сука, падла! Иди сюда, мерзавец, негодяй, гад, иди сюда, ты, говно, ЖОПА!",
+		"isPublic" : "true",
+		"tags" : ["текст","ублюдок"],
+      "pictureId": "https://i.ytimg.com/vi/ak0VILEdYDw/maxresdefault.jpg"
+	},
+	{
+		"name" : "Пиздец!",
+		"description" : "Раст Коул(Мэттью Макконехи) курит с напряженным взглядом",
+		"isPublic" : "true",
+		"tags" : ["Мэттью Макконехи","Раст Коул", "настоящий детектив", "сигарета", "пиздец"],
+      "pictureId": "https://www.meme-arsenal.com/memes/efc930bf37f5f1035df35690c75dccbf.jpg"
+	}
+]
+
+###

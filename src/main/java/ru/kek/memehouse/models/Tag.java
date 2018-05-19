@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * gordeevnm@gmail.com
  * 07.10.17
  */
+
+@Entity
 @Data
 @Accessors(chain = true)
 @Builder
@@ -23,7 +22,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Tag {
 	@Id
-	private String tag;
+	private String name;
 	@Column(name = "memes_count")
 	private int memesCount;
 	@ManyToOne()
@@ -31,6 +30,7 @@ public class Tag {
 	private Tag mergedWith;
 	@Column(name = "merge_time")
 	private Timestamp mergeTime;
-	@Column(name = "merged_by")
+	@ManyToOne
+	@JoinColumn(name = "merged_by")
 	private User mergedBy;
 }

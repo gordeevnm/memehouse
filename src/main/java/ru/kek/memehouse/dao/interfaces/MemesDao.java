@@ -2,6 +2,7 @@ package ru.kek.memehouse.dao.interfaces;
 
 import ru.kek.memehouse.models.Meme;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,5 +14,7 @@ public interface MemesDao {
 	
 	void update(Meme meme, Long updatedBy);
 	
-	Optional<Meme> findById(int memeId);
+	Optional<Meme> findById(Long memeId);
+	
+	List<Meme> findAllById(List<Long> ids);
 }

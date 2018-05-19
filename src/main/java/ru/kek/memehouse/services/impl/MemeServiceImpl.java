@@ -1,7 +1,10 @@
 package ru.kek.memehouse.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
+import ru.kek.memehouse.dao.elastic.MemesElasticRepo;
 import ru.kek.memehouse.dao.interfaces.MemesDao;
 import ru.kek.memehouse.dto.MemeDto;
 import ru.kek.memehouse.dto.MemeModifyDto;
@@ -13,6 +16,10 @@ import ru.kek.memehouse.services.interfaces.MemeService;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.elasticsearch.index.query.QueryBuilders.disMaxQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 /**
  * gordeevnm@gmail.com
@@ -22,6 +29,10 @@ import java.util.List;
 public class MemeServiceImpl implements MemeService {
 	@Autowired
 	private MemesDao memesDao;
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
+	@Autowired
+	private MemesElasticRepo memesElasticRepo;
 	
 	@Override
 	public List<Meme> search(SearchQuery query) {
@@ -37,12 +48,31 @@ public class MemeServiceImpl implements MemeService {
 			  .setDeleted(false);
 		
 		memesDao.create(meme);
+		memesElasticRepo.save(meme);
 		
 		return MemeDto.from(meme);
 	}
 	
 	@Override
-	public MemeDto get(int memeId) {
+	public List<MemeDto> create(List<MemeModifyDto> memeInfo) {
+		final List<Meme> memes = memeInfo.stream()
+			  .map(memeModifyDto -> memeModifyDto.toModel()
+					 .setCreatedByUser(AuthUtils.authenticatedUser())
+					 .setCreatedById(AuthUtils.authenticatedUser().getId())
+					 .setCreateTime(new Timestamp(System.currentTimeMillis()))
+					 .setDeleted(false))
+			  .peek(memesDao::create)
+			  .collect(Collectors.toList());
+		
+		memesElasticRepo.saveAll(memes);
+		
+		return memes.stream()
+			  .map(MemeDto::from)
+			  .collect(Collectors.toList());
+	}
+	
+	@Override
+	public MemeDto get(Long memeId) {
 		Meme meme = memesDao.findById(memeId)
 //			  .filter(m -> m.isPublic() ||
 //					 Objects.equals(m.getCreatedBy().getId(), AuthUtils.authenticatedUser().getId()) ||
@@ -54,13 +84,15 @@ public class MemeServiceImpl implements MemeService {
 	}
 	
 	@Override
-	public MemeDto put(int memeId, MemeModifyDto memeInfo) {
+	public MemeDto put(Long memeId, MemeModifyDto memeInfo) {
 		Meme meme = memesDao.findById(memeId)
 			  .orElseThrow(() -> new NotFoundException("meme " + memeId + " not found"));
 		
 		meme.setTags(memeInfo.getTags())
 			  .setName(memeInfo.getName())
 			  .setDescription(memeInfo.getDescription())
+			  .setPictureId(memeInfo.getPictureId())
+			  .setLurkmoreLink(memeInfo.getLurkmoreLink())
 			  .setPublic(memeInfo.isPublic());
 		
 		memesDao.update(meme, AuthUtils.authenticatedUser().getId());
@@ -69,17 +101,36 @@ public class MemeServiceImpl implements MemeService {
 	}
 	
 	@Override
-	public void delete(int memeId) {
+	public void delete(Long memeId) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
 	@Override
-	public void save(int memeId) {
+	public void save(Long memeId) {
 		throw new UnsupportedOperationException("Service not implemented");
 	}
 	
 	@Override
-	public void addNote(int memeId, String note) {
+	public void addNote(Long memeId, String note) {
 		throw new UnsupportedOperationException("Service not implemented");
+	}
+	
+	@Override
+	public List<Meme> simpleSearch(String text) {
+		org.springframework.data.elasticsearch.core.query.SearchQuery query = new NativeSearchQueryBuilder()
+			  .withQuery(
+					 disMaxQuery()
+							.add(matchQuery("name", text).boost(2).fuzziness("auto"))
+							.add(matchQuery("description", text).boost(1).fuzziness("auto"))
+							.add(matchQuery("tags", text))
+			  )
+			  .withFields("id")
+			  .build();
+		
+		final List<Long> ids = elasticsearchTemplate.queryForIds(query)
+			  .stream()
+			  .map(Long::parseLong)
+			  .collect(Collectors.toList());
+		return memesDao.findAllById(ids);
 	}
 }

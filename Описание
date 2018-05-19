@@ -46,3 +46,355 @@
 Администратор может:
   1). выдавать права модераторам.
   2). просматривать и изменять любые данные.
+
+
+
+
+
+
+
+
+
+
+
+
+-- we don't know how to generate database memehouse (class Database) :(
+create table "user"
+(
+	id                bigserial             not null
+		constraint user_pkey
+		primary key,
+	username          varchar(255)          not null,
+	password          varchar(255)          not null,
+	email             varchar(255),
+	roles             varchar(255) [],
+	registration_time timestamp             not null,
+	deletion_time     timestamp,
+	is_deleted        boolean default false not null
+);
+
+create table ban
+(
+	id           bigserial            not null
+		constraint ban_pkey
+		primary key,
+	user_id      bigint               not null
+		constraint ban_user_id_fkey
+		references "user",
+	moderator_id bigint               not null
+		constraint ban_moderator_id_fkey
+		references "user",
+	start_time   timestamp            not null,
+	end_time     timestamp            not null,
+	reason       varchar(1000)        not null,
+	is_active    boolean default true not null
+);
+
+create table meme
+(
+	id              bigserial             not null
+		constraint meme_pkey
+		primary key,
+	created_by      bigint                not null
+		constraint meme_created_by_fkey
+		references "user",
+	description     varchar(1000)         not null,
+	name            varchar(255)          not null,
+	create_time     timestamp             not null,
+	is_public       boolean               not null,
+	lurkmore_link   varchar(255),
+	picture_id      varchar(255),
+	tags_array      varchar(50) []        not null,
+	is_deleted      boolean default false not null,
+	last_updated_by bigint
+		constraint meme_last_updated_by_fkey
+		references "user"
+);
+
+create table note
+(
+	id      bigserial    not null
+		constraint note_pkey
+		primary key,
+	user_id bigint       not null
+		constraint note_user_id_fkey
+		references "user",
+	meme_id bigint       not null
+		constraint note_meme_id_fkey
+		references meme,
+	note    varchar(500) not null
+);
+
+create table tag
+(
+	name        varchar(50)       not null
+		constraint tag_pkey
+		primary key,
+	memes_count integer default 0 not null,
+	merged_with varchar(50)
+		constraint tag_merged_with_fkey
+		references tag,
+	merge_time  timestamp,
+	merged_by   bigint
+		constraint tag_merged_by_fkey
+		references "user"
+);
+
+create table meme_tag
+(
+	meme_id  bigint      not null
+		constraint meme_tag_meme_id_fkey
+		references meme,
+	tag_name varchar(50) not null
+);
+
+create table bookmark_group
+(
+	id          bigserial         not null
+		constraint bookmark_group_pkey
+		primary key,
+	name        varchar(80)       not null,
+	owner_id    bigint            not null
+		constraint bookmark_group_owner_id_fkey
+		references "user",
+	memes_count integer default 0 not null
+);
+
+create table bookmark
+(
+	id       bigserial not null
+		constraint bookmark_pkey
+		primary key,
+	meme_id  bigint    not null
+		constraint bookmark_meme_id_fkey
+		references meme,
+	group_id bigint
+		constraint bookmark_group_id_fkey
+		references bookmark_group
+);
+
+create function prepare_tags(tags_array character varying [])
+	returns character varying []
+language sql
+as $$
+with tag_rows as (insert into tag (name)
+values (unnest(prepare_tags.tags_array))
+on conflict (name)
+	do update SET name = EXCLUDED.name
+returning coalesce(merged_with, name))
+select array(select distinct *
+             from tag_rows);
+$$;
+
+comment on function prepare_tags(tags_array character varying [])
+is '
+Записывает входной массив тегов в бд, возвращает массив тегов с удаленными дубликатами и связанными тегами.
+';
+
+create function insert_meme(created_by    bigint, description character varying, name character varying,
+                            create_time   timestamp without time zone, is_public boolean,
+                            tags_array    character varying [],
+                            lurkmore_link character varying DEFAULT NULL :: character varying,
+                            picture_id    character varying DEFAULT NULL :: character varying,
+                            is_deleted    boolean DEFAULT false)
+	returns meme
+language plpgsql
+as $$
+declare
+	prepared_tags varchar(50) [];
+	saved_meme    meme;
+begin
+	select prepare_tags(insert_meme.tags_array)
+	into prepared_tags;
+
+	insert into meme (
+		created_by,
+		description,
+		name,
+		create_time,
+		is_public,
+		lurkmore_link,
+		picture_id,
+		tags_array,
+		is_deleted)
+	values
+		(insert_meme.created_by,
+		 insert_meme.description,
+		 insert_meme.name,
+		 insert_meme.create_time,
+		 insert_meme.is_public,
+		 insert_meme.lurkmore_link,
+		 insert_meme.picture_id,
+		 prepared_tags,
+		 insert_meme.is_deleted)
+	returning *
+		into saved_meme;
+
+	insert into meme_tag (meme_id, tag_name)
+		select
+			saved_meme.id,
+			unnest(prepared_tags);
+
+	return saved_meme;
+end;
+$$;
+
+create function update_meme(meme_id       bigint, last_updated_by bigint, description character varying,
+                            name          character varying, is_public boolean, tags_array character varying [],
+                            lurkmore_link character varying DEFAULT NULL :: character varying,
+                            picture_id    character varying DEFAULT NULL :: character varying)
+	returns meme
+language plpgsql
+as $$
+declare
+	prepared_tags varchar(50) [];
+	saved_meme    meme;
+begin
+	select prepare_tags(update_meme.tags_array)
+	into prepared_tags;
+
+	-- 	todo сохранять все обновления в отдельной таблице триггерами
+
+	update meme
+	set
+		description     = update_meme.description,
+		name            = update_meme.name,
+		last_updated_by = update_meme.last_updated_by,
+		is_public       = update_meme.is_public,
+		lurkmore_link   = update_meme.lurkmore_link,
+		picture_id      = update_meme.picture_id,
+		tags_array      = prepared_tags
+	where
+		id = update_meme.meme_id
+	returning *
+		into saved_meme;
+
+	delete from meme_tag
+	where meme_tag.meme_id = update_meme.meme_id;
+
+	insert into meme_tag (meme_id, tag_name)
+		select
+			saved_meme.id,
+			unnest(prepared_tags);
+
+	return saved_meme;
+end;
+$$;
+
+create function merge_tag(derivative_tag character varying, general_tag character varying, merged_by bigint,
+                          merge_time     timestamp without time zone, force_remerge boolean DEFAULT false)
+	returns SETOF bigint
+language plpgsql
+as $$
+declare
+	derivative_tag_row tag;
+	general_tag_row    tag;
+	remerged_tags      varchar [];
+begin
+
+	if exists(select name
+	          from tag
+	          where name = merge_tag.general_tag)
+	then
+		select *
+		into general_tag_row
+		from tag
+		where name = merge_tag.general_tag;
+	else
+		insert into tag (name)
+		values (merge_tag.general_tag)
+		on conflict (name)
+			do update set name = EXCLUDED.name
+		returning *
+			into general_tag_row;
+	end if;
+
+	-- Не мержить если главный тег уже смержен - для этого надо
+	-- вручную указать свободый тег, с которым надо связать
+	if general_tag_row.merged_with notnull
+	then
+
+		raise exception 'Already merged tag.'
+		using hint = 'General tag(' || merge_tag.general_tag || ') is already merged with tag ' ||
+		             general_tag_row.merged_with || '.';
+
+	end if;
+
+	if exists(select name
+	          from tag
+	          where name = merge_tag.derivative_tag)
+	then
+		select tag.*
+		into derivative_tag_row
+		from tag
+		where name = merge_tag.derivative_tag;
+	else
+		insert into tag (name)
+		values (merge_tag.derivative_tag)
+		on conflict (name)
+			do update set name = EXCLUDED.name
+		returning *
+			into derivative_tag_row;
+	end if;
+
+
+	if derivative_tag_row.merged_with isnull
+	then
+		if general_tag_row.merged_with isnull
+		then
+
+			-- Обновляем ссылки на главные теги
+			-- у объединяемого тега и всех объединенных с ним
+			update tag
+			set
+				merged_with = merge_tag.general_tag,
+				merged_by   = merge_tag.merged_by,
+				merge_time  = merge_tag.merge_time
+			where
+				name = merge_tag.derivative_tag or
+				merged_with = merge_tag.derivative_tag
+			returning name
+				into remerged_tags;
+
+			-- Обновляем списки тегов у всех затронутых мемов
+			return query
+			update meme
+			set
+				tags_array = prepare_tags(tags_array)
+			where
+				id in (select distinct meme_id
+				       from meme_tag
+				       where tag_name = any (remerged_tags))
+			returning meme.id;
+
+		end if;
+
+	else
+
+		if merge_tag.force_remerge
+		then
+
+			-- Обновляем ссылку на главный тег у объединяемого тега
+			update tag
+			set
+				merged_with = merge_tag.general_tag,
+				merged_by   = merge_tag.merged_by,
+				merge_time  = merge_tag.merge_time
+			where
+				name = merge_tag.derivative_tag;
+
+			return;
+
+		else
+
+			raise exception 'Already merged tag.'
+			using hint = 'Derivative tag(' || merge_tag.derivative_tag || ') already merged with tag ' ||
+			             derivative_tag_row.merged_with || '. ' ||
+			             'Use parameter force_remerge to remerge this tag with another one.';
+
+		end if;
+
+	end if;
+end;
+$$;
+

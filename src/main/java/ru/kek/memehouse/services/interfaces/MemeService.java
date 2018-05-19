@@ -16,13 +16,17 @@ public interface MemeService {
 	
 	MemeDto create(MemeModifyDto meme);
 	
-	MemeDto get(int memeId);
+	MemeDto get(Long memeId);
 	
-	MemeDto put(int memeId, MemeModifyDto meme);
+	MemeDto put(Long memeId, MemeModifyDto meme);
 	
-	void delete(int memeId);
+	void delete(Long memeId);
 	
-	void save(int memeId);
+	void save(Long memeId);
 	
-	void addNote(int memeId, String note);
+	void addNote(Long memeId, String note);
+	
+	List<Meme> simpleSearch(String query);
+	
+	List<MemeDto> create(List<MemeModifyDto> memeInfo);
 }

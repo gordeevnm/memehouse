@@ -207,45 +207,45 @@ public class TestData {
 	);
 	
 	private static final List<Tag> tags = Arrays.asList(
-		  Tag.builder().tag("Pepe").build(),
-		  Tag.builder().tag("Пепе").build(),
-		  Tag.builder().tag("тыква").build(),
-		  Tag.builder().tag("Фрейд").build(),
-		  Tag.builder().tag("фотография").build(),
-		  Tag.builder().tag("фото").build(),
-		  Tag.builder().tag("рисунок").build(),
-		  Tag.builder().tag("картинка").build(),
-		  Tag.builder().tag("воробьи").build(),
-		  Tag.builder().tag("воробей").build(),
-		  Tag.builder().tag("цитата").build(),
-		  Tag.builder().tag("ублюдок").build(),
-		  Tag.builder().tag("боль").build(),
-		  Tag.builder().tag("негр").build(),
-		  Tag.builder().tag("властелин").build(),
-		  Tag.builder().tag("нигер").build(),
-		  Tag.builder().tag("афроамериканец").build(),
-		  Tag.builder().tag("гиф").build(),
-		  Tag.builder().tag("gif").build(),
-		  Tag.builder().tag("анимация").build(),
-		  Tag.builder().tag("текст").build(),
-		  Tag.builder().tag("лягушка").build(),
-		  Tag.builder().tag("Harold").build(),
-		  Tag.builder().tag("Гарольд").build(),
-		  Tag.builder().tag("шакалы").build(),
-		  Tag.builder().tag("ржака").build(),
-		  Tag.builder().tag("файлообменник").build(),
-		  Tag.builder().tag("скайп").build(),
-		  Tag.builder().tag("skype").build(),
-		  Tag.builder().tag("бред").build(),
-		  Tag.builder().tag("реклама").build(),
-		  Tag.builder().tag("танец").build(),
-		  Tag.builder().tag("актер").build(),
-		  Tag.builder().tag("интеллект").build(),
-		  Tag.builder().tag("мотивация").build(),
-		  Tag.builder().tag("член").build(),
-		  Tag.builder().tag("zip").build(),
-		  Tag.builder().tag("комикс").build(),
-		  Tag.builder().tag("эмоции").build()
+		  Tag.builder().name("Pepe").build(),
+		  Tag.builder().name("Пепе").build(),
+		  Tag.builder().name("тыква").build(),
+		  Tag.builder().name("Фрейд").build(),
+		  Tag.builder().name("фотография").build(),
+		  Tag.builder().name("фото").build(),
+		  Tag.builder().name("рисунок").build(),
+		  Tag.builder().name("картинка").build(),
+		  Tag.builder().name("воробьи").build(),
+		  Tag.builder().name("воробей").build(),
+		  Tag.builder().name("цитата").build(),
+		  Tag.builder().name("ублюдок").build(),
+		  Tag.builder().name("боль").build(),
+		  Tag.builder().name("негр").build(),
+		  Tag.builder().name("властелин").build(),
+		  Tag.builder().name("нигер").build(),
+		  Tag.builder().name("афроамериканец").build(),
+		  Tag.builder().name("гиф").build(),
+		  Tag.builder().name("gif").build(),
+		  Tag.builder().name("анимация").build(),
+		  Tag.builder().name("текст").build(),
+		  Tag.builder().name("лягушка").build(),
+		  Tag.builder().name("Harold").build(),
+		  Tag.builder().name("Гарольд").build(),
+		  Tag.builder().name("шакалы").build(),
+		  Tag.builder().name("ржака").build(),
+		  Tag.builder().name("файлообменник").build(),
+		  Tag.builder().name("скайп").build(),
+		  Tag.builder().name("skype").build(),
+		  Tag.builder().name("бред").build(),
+		  Tag.builder().name("реклама").build(),
+		  Tag.builder().name("танец").build(),
+		  Tag.builder().name("актер").build(),
+		  Tag.builder().name("интеллект").build(),
+		  Tag.builder().name("мотивация").build(),
+		  Tag.builder().name("член").build(),
+		  Tag.builder().name("zip").build(),
+		  Tag.builder().name("комикс").build(),
+		  Tag.builder().name("эмоции").build()
 	);
 	
 	static {
@@ -260,36 +260,40 @@ public class TestData {
 		memes.get(8).setTags(new String[]{"комикс", "zip", "бред", "рисунок"});
 		memes.get(9).setTags(new String[]{"ублюдок", "текст"});
 		
-		tags.get(1).setMergedWith(tags.get(0)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(5).setMergedWith(tags.get(4)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(9).setMergedWith(tags.get(8)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(15).setMergedWith(tags.get(13)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(16).setMergedWith(tags.get(13)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(17).setMergedWith(tags.get(18)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(19).setMergedWith(tags.get(18)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(22).setMergedWith(tags.get(22)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
-		tags.get(28).setMergedWith(tags.get(27)).setMergedBy(users.get(4)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(1).setMergedWith(tags.get(0)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(5).setMergedWith(tags.get(4)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(9).setMergedWith(tags.get(8)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(15).setMergedWith(tags.get(13)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(16).setMergedWith(tags.get(13)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(17).setMergedWith(tags.get(18)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(19).setMergedWith(tags.get(18)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(22).setMergedWith(tags.get(22)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
+		tags.get(28).setMergedWith(tags.get(27)).setMergedBy(users.get(0)).setMergeTime(new Timestamp(System.currentTimeMillis()));
 		
-		memes.get(0).setCreatedByUser(users.get(2));
-		memes.get(1).setCreatedByUser(users.get(3));
-		memes.get(2).setCreatedByUser(users.get(5));
-		memes.get(3).setCreatedByUser(users.get(2));
-		memes.get(4).setCreatedByUser(users.get(2));
-		memes.get(5).setCreatedByUser(users.get(6));
-		memes.get(6).setCreatedByUser(users.get(5));
-		memes.get(7).setCreatedByUser(users.get(3));
-		memes.get(8).setCreatedByUser(users.get(2));
-		memes.get(9).setCreatedByUser(users.get(6));
+//		memes.get(0).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(1).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(2).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(3).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(4).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(5).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(6).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(7).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
+//		memes.get(8).setCreatedByUser(users.get(0)).setCreatedById(users.get(0).getId());
 		
 		bookmarkGroups.get(0).setOwner(users.get(0));
 		bookmarkGroups.get(1).setOwner(users.get(0));
-		bookmarkGroups.get(2).setOwner(users.get(2));
-		bookmarkGroups.get(3).setOwner(users.get(2));
-		bookmarkGroups.get(4).setOwner(users.get(1));
+		bookmarkGroups.get(2).setOwner(users.get(0));
+		bookmarkGroups.get(3).setOwner(users.get(0));
+		bookmarkGroups.get(4).setOwner(users.get(0));
 		bookmarkGroups.get(5).setOwner(users.get(0));
-		bookmarkGroups.get(6).setOwner(users.get(4));
-		bookmarkGroups.get(7).setOwner(users.get(6));
-		bookmarkGroups.get(8).setOwner(users.get(6));
-		bookmarkGroups.get(9).setOwner(users.get(6));
+		bookmarkGroups.get(6).setOwner(users.get(0));
+		bookmarkGroups.get(7).setOwner(users.get(0));
+		bookmarkGroups.get(8).setOwner(users.get(0));
+		bookmarkGroups.get(9).setOwner(users.get(0));
+	}
+	
+	public static List<Meme> get() {
+		memes.forEach(m -> m.setCreatedByUser(users.get(0)).setCreatedById(1L));
+		return memes;
 	}
 }

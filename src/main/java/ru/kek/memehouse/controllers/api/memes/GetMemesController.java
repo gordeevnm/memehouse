@@ -16,7 +16,7 @@ import java.util.List;
  * 20.11.17
  */
 @RestController
-@RequestMapping(value = "/api/meme", method = RequestMethod.GET)
+@RequestMapping(value = "/api/memes", method = RequestMethod.GET)
 public class GetMemesController {
 	
 	private final MemeService memeService;
@@ -32,9 +32,15 @@ public class GetMemesController {
 		return memeService.search(query);
 	}
 	
+	@RequestMapping("/search/simple")
+	@ResponseStatus(HttpStatus.OK)
+	public List<Meme> search(@RequestParam("query") String query) {
+		return memeService.simpleSearch(query);
+	}
+	
 	@RequestMapping("/{meme-id}")
 	@ResponseStatus(HttpStatus.OK)
-	public MemeDto get(@PathVariable("meme-id") int memeId) {
+	public MemeDto get(@PathVariable("meme-id") Long memeId) {
 		return memeService.get(memeId);
 	}
 	

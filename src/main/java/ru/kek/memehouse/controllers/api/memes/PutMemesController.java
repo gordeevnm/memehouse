@@ -12,7 +12,7 @@ import ru.kek.memehouse.services.interfaces.MemeService;
  * 20.11.17
  */
 @RestController
-@RequestMapping(value = "/api/meme", method = RequestMethod.PUT)
+@RequestMapping(value = "/api/memes", method = RequestMethod.PUT)
 public class PutMemesController {
 	
 	private final MemeService memeService;
@@ -25,7 +25,7 @@ public class PutMemesController {
 	@RequestMapping("/{meme-id}")
 	@ResponseStatus(HttpStatus.OK)
 //	@PreAuthorize("hasAnyRole('REGISTERED_USER')")
-	public MemeDto put(@PathVariable("meme-id") int memeId,
+	public MemeDto put(@PathVariable("meme-id") Long memeId,
 	                   @RequestBody MemeModifyDto memeInfo) {
 		return memeService.put(memeId, memeInfo);
 	}
