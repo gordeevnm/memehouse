@@ -10,8 +10,8 @@ import ru.kek.memehouse.exceptions.*;
 import ru.kek.memehouse.exceptions.dto.ExceptionDto;
 import ru.kek.memehouse.exceptions.dto.ValidationExceptionDto;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * gordeevnm@gmail.com
@@ -24,18 +24,12 @@ public class AppExceptionHandler {
 	@ResponseBody
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDto<List<ValidationExceptionDto>> validationExceptionHandler(BindException e) {
-		System.out.println("BindException");
-		List<ValidationExceptionDto> result = new ArrayList<>();
-		e.getFieldErrors().forEach(fieldError -> result.add(
-			  new ValidationExceptionDto(
-					 fieldError.getField(),
-					 fieldError.getDefaultMessage()
-			  )
-		));
-		
+		System.err.println("BindException");
 		return ExceptionDto.<List<ValidationExceptionDto>>builder()
 			  .cause("ValidationException")
-			  .data(result)
+			  .data(e.getFieldErrors().stream()
+					  .map(fieldError -> new ValidationExceptionDto(fieldError.getField(), fieldError.getDefaultMessage()))
+					  .collect(Collectors.toList()))
 			  .build();
 	}
 	
@@ -43,18 +37,10 @@ public class AppExceptionHandler {
 	@ResponseBody
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ExceptionDto<List<ValidationExceptionDto>> validationExceptionHandler(ValidationException e) {
-		System.out.println("BindException");
-		List<ValidationExceptionDto> result = new ArrayList<>();
-		e.getErrors().forEach(exceptionDto -> result.add(
-			  new ValidationExceptionDto(
-					 exceptionDto.getField(),
-					 exceptionDto.getMessage()
-			  )
-		));
-		
+		System.err.println("BindException");
 		return ExceptionDto.<List<ValidationExceptionDto>>builder()
 			  .cause("ValidationException")
-			  .data(result)
+			  .data(e.getErrors())
 			  .build();
 	}
 	
