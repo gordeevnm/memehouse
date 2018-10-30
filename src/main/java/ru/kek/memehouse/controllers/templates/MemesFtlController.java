@@ -1,6 +1,6 @@
 package ru.kek.memehouse.controllers.templates;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +13,9 @@ import ru.kek.memehouse.services.interfaces.MemeService;
  * 19.05.18
  */
 @Controller
+@RequiredArgsConstructor
 public class MemesFtlController {
-	@Autowired
-	private MemeService memeService;
+	private final MemeService memeService;
 	
 	@RequestMapping("/memes/{meme-id}")
 	public String get(@PathVariable("meme-id") Long memeId, Model model) {

@@ -1,6 +1,6 @@
 package ru.kek.memehouse.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,11 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
  * 12.12.17
  */
 @Service
+@RequiredArgsConstructor
 public class MemeServiceImpl implements MemeService {
-	@Autowired
-	private MemesDao memesDao;
-	@Autowired
-	private ElasticsearchTemplate elasticsearchTemplate;
-	@Autowired
-	private MemesElasticRepo memesElasticRepo;
+	private final MemesDao memesDao;
+	private final ElasticsearchTemplate elasticsearchTemplate;
+	private final MemesElasticRepo memesElasticRepo;
 	
 	@Override
 	public List<Meme> search(SearchQuery query) {

@@ -1,6 +1,6 @@
 package ru.kek.memehouse.controllers.api.memes;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -23,9 +23,9 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
  * 18.05.18
  */
 @RestController
+@RequiredArgsConstructor
 public class ElasticTestController {
-	@Autowired
-	private ElasticsearchTemplate elasticsearchTemplate;
+	private final ElasticsearchTemplate elasticsearchTemplate;
 	
 	@RequestMapping(value = "/memes/test", method = RequestMethod.GET)
 	public List<String> testSearch(@RequestParam("query") String text) {
@@ -44,12 +44,9 @@ public class ElasticTestController {
 //		return memesElasticSearchRepo.find(query, query.split(" "));
 	}
 	
-	@Autowired
-	private MemesRepo memesRepo;
-	@Autowired
-	private MemesDao memesDao;
-	@Autowired
-	private MemesElasticRepo memesElasticRepo;
+	private final MemesRepo memesRepo;
+	private final MemesDao memesDao;
+	private final MemesElasticRepo memesElasticRepo;
 	
 	@RequestMapping(value = "/memes/reload", method = RequestMethod.GET)
 	public Iterable<Meme> loadToElastic() {

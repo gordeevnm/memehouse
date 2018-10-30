@@ -1,7 +1,7 @@
 package ru.kek.memehouse.dao.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
  * 14.01.18
  */
 @Repository
+@RequiredArgsConstructor
 public class MemesDaoJdbcImpl implements MemesDao {
-	@Autowired
-	private NamedParameterJdbcTemplate namedJdbcTemplate;
+	private final NamedParameterJdbcTemplate namedJdbcTemplate;
 	
 	@SneakyThrows
 	private java.sql.Array createSqlArray(String[] arr) {

@@ -1,6 +1,6 @@
 package ru.kek.memehouse.controllers.api.memes;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +11,11 @@ import ru.kek.memehouse.services.interfaces.MemeService;
  * 20.11.17
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/memes", method = RequestMethod.DELETE)
 public class DeleteMemesController {
 	
 	private final MemeService memeService;
-	
-	@Autowired
-	public DeleteMemesController(MemeService memeService) {
-		this.memeService = memeService;
-	}
 	
 	@RequestMapping("/{meme-id}")
 	@ResponseStatus(HttpStatus.OK)
