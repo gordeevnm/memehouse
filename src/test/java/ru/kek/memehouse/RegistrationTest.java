@@ -1,9 +1,9 @@
 package ru.kek.memehouse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -29,13 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 	  classes = {DBInit.class, MemeHouseApplication.class})
 @TestPropertySource("classpath:application-test.properties")
 @AutoConfigureMockMvc
+@RequiredArgsConstructor
 public class RegistrationTest {
-	@Autowired
-	private ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 	@Resource
 	private WebApplicationContext webApplicationContext;
-	@Autowired
-	private MockMvc mockMvc;
+	private final MockMvc mockMvc;
 
 //	@Before
 //	public void setUp() throws Exception {

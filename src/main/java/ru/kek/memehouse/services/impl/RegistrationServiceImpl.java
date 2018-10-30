@@ -1,6 +1,6 @@
 package ru.kek.memehouse.services.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.kek.memehouse.dao.interfaces.UsersDao;
@@ -19,11 +19,10 @@ import java.sql.Timestamp;
  * 14.01.18
  */
 @Service
+@RequiredArgsConstructor
 public class RegistrationServiceImpl implements RegistrationService {
-	@Autowired
-	private UsersDao usersDao;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final UsersDao usersDao;
+	private final PasswordEncoder passwordEncoder;
 	
 	@Override
 	public UserDto registration(RegistrationDto registrationDto, HttpServletRequest request, HttpServletResponse response) {

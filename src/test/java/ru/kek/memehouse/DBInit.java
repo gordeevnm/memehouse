@@ -1,7 +1,7 @@
 package ru.kek.memehouse;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
@@ -16,9 +16,9 @@ import java.sql.Statement;
  * 15.01.18
  */
 @Configuration
+@RequiredArgsConstructor
 public class DBInit {
-	@Autowired
-	private DataSource dataSource;
+	private final DataSource dataSource;
 	
 	@PostConstruct
 	private void initDb() throws SQLException, IOException {

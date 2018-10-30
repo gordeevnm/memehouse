@@ -2,6 +2,7 @@ package ru.kek.memehouse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
+import lombok.RequiredArgsConstructor;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,14 +34,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 	  classes = {DBInit.class, MemeHouseApplication.class})
 @TestPropertySource("classpath:application-test.properties")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@RequiredArgsConstructor
 @AutoConfigureMockMvc
 public class LoginTest {
-	@Autowired
-	private ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 	@Resource
 	private WebApplicationContext webApplicationContext;
-	@Autowired
-	private MockMvc mockMvc;
+	private final MockMvc mockMvc;
 
 //	@Before
 //	public void setUp() throws Exception {

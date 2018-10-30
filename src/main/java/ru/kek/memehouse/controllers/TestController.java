@@ -33,11 +33,6 @@ public class TestController {
 	@RequestMapping(value = "/api/session", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public HttpSession test1(HttpSession session) {
-		SecurityContextHolderStrategy holder = SecurityContextHolder.getContextHolderStrategy();
-		SecurityContext context = (SecurityContext) session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
-		SecurityContext context1 = SecurityContextHolder.getContext();
-		Authentication authentication = context.getAuthentication();
-		Authentication authentication1 = context1.getAuthentication();
 		System.out.println(session.getId());
 		return session;
 	}

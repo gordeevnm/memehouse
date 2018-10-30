@@ -1,6 +1,6 @@
 package ru.kek.memehouse.controllers.api.memes;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.kek.memehouse.dto.MemeDto;
@@ -16,15 +16,11 @@ import java.util.List;
  * 20.11.17
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/memes", method = RequestMethod.GET)
 public class GetMemesController {
 	
 	private final MemeService memeService;
-	
-	@Autowired
-	public GetMemesController(MemeService memeService) {
-		this.memeService = memeService;
-	}
 	
 	@RequestMapping("/search")
 	@ResponseStatus(HttpStatus.OK)

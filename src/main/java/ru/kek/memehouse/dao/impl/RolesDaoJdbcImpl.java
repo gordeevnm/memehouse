@@ -1,7 +1,7 @@
 package ru.kek.memehouse.dao.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.intellij.lang.annotations.Language;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Repository;
@@ -16,6 +16,7 @@ import java.util.Map;
  * 14.01.18
  */
 @Repository
+@RequiredArgsConstructor
 public class RolesDaoJdbcImpl implements RolesDao {
 	@Language("PostgreSQL")
 	private static final String GRANT_ROLE_SQL =
@@ -24,8 +25,7 @@ public class RolesDaoJdbcImpl implements RolesDao {
 				 "WHERE id = :userId " +
 				 "   AND NOT roles @> ARRAY[:role]::VARCHAR[]";
 	
-	@Autowired
-	private NamedParameterJdbcTemplate namedJdbcTemplate;
+	private final NamedParameterJdbcTemplate namedJdbcTemplate;
 	
 	@Override
 	public void grantRole(GrantedAuthority role, User user) {
